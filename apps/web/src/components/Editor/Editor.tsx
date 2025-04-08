@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react"
 import { useRecoilState } from "recoil";
 import { editorContentState, editorLanguageState, editorThemeState } from "../../store/editorAtoms";
 
-export default function CodeEditor() {
+export const CodeEditor = () => {
     const [code, setCode] = useRecoilState(editorContentState);
     const [language] = useRecoilState(editorLanguageState);
     const [theme] = useRecoilState(editorThemeState);

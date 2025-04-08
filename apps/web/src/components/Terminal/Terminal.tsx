@@ -3,7 +3,7 @@ import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 // import '@xterm/css/xterm.css';
 
-export default function TerminalComponent() {
+export const TerminalComponent = () => {
     const terminalRef = useRef<HTMLDivElement | null>(null);
     const term = useRef<Terminal | null>(null);
     const fitAddon = useRef<FitAddon | null>(null);
