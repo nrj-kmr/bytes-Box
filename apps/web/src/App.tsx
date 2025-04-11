@@ -3,9 +3,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { WorkSpace } from './pages/WorkSpace';
 import { HomePage } from './pages/Home';
 
-
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>

@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { activeTabState, FileNode, openTabsState } from "../../store/fileSystem";
-
+import { IconX } from "../Icons";
 
 export const Tabs = () => {
     const [openTabs, setOpenTabs] = useRecoilState(openTabsState);
@@ -19,20 +19,30 @@ export const Tabs = () => {
     };
 
     return (
-        <div className="flex space-x-2 p-2 bg-gray-200 border-b">
+        <div className="flex overflow-x-auto border-b border-[rgb(var(--border))] bg-[rgb(var(--card))]">
             {openTabs.map((file) => (
                 <div
                     key={file.id}
                     onClick={() => handleTabClick(file)}
-                    className={`px-2 py-1 border rounded-t ${file.id === activeTab?.id ? 'bg-gray-200 font-bold' : 'bg-gray-100'
-                        } cursor-pointer flex items-center`}
+                    className={`
+                        px-3 py-2 flex items-center text-sm border-r border-[rgb(var(--border))] relative min-w-[100px] max-w-[200px]
+                        ${file.id === activeTab?.id 
+                            ? 'bg-[rgb(var(--background))] text-[rgb(var(--foreground))]' 
+                            : 'bg-[rgb(var(--secondary))] text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))]'
+                        }
+                        ${file.id === activeTab?.id ? 'before:absolute before:bottom-0 before:left-0 before:right-0 before:h-[2px] before:bg-[rgb(var(--primary))]' : ''}
+                        transition-colors cursor-pointer group whitespace-nowrap
+                    `}
                 >
-                    {file.name}
+                    <div className="truncate flex-1">{file.name}</div>
                     <button
-                        className="ml-2 text-sm text-red-500"
+                        className={`
+                            ml-2 rounded-sm hover:bg-[rgb(var(--muted))] transition-opacity
+                            ${file.id === activeTab?.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+                        `}
                         onClick={(e) => handleCloseTab(e, file)}
                     >
-                        ✖️
+                        <IconX className="w-3.5 h-3.5" />
                     </button>
                 </div>
             ))}

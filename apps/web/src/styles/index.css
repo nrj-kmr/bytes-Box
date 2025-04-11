@@ -1,7 +1,15 @@
-@import "tailwindcss";
+@layer theme, base, components, utilities;
 
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
 
+/* Import shared UI styles */
+@import "@repo/ui/styles/globals.css";
 
+/* Additional web app specific styles can go here */
+
+/* The rest of the commented styles are preserved but remain commented out */
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

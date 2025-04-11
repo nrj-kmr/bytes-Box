@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
-// import '@xterm/css/xterm.css';
+import '@xterm/xterm/css/xterm.css';
 
 export const TerminalComponent = () => {
     const terminalRef = useRef<HTMLDivElement | null>(null);
@@ -12,12 +12,8 @@ export const TerminalComponent = () => {
         if (terminalRef.current) {
             term.current = new Terminal({
                 cursorBlink: true,
-                // fontSize: 16,
                 fontFamily: 'monospace',
-                // lineHeight: 1.5,
-                // scrollback: 1000,
                 rows: 20,
-                // cols: 80,
                 theme: {
                     background: '#1e1e1e',
                     foreground: '#ffffff',
@@ -28,17 +24,33 @@ export const TerminalComponent = () => {
             fitAddon.current = new FitAddon();
             term.current.loadAddon(fitAddon.current);
             term.current.open(terminalRef.current);
+            
+            // Use setTimeout to ensure the terminal element is properly mounted
             setTimeout(() => {
-                fitAddon.current?.fit();
-            }, 0);
+                if (fitAddon.current) {
+                    try {
+                        fitAddon.current.fit();
+                    } catch (err) {
+                        console.error('Failed to fit terminal:', err);
+                    }
+                }
+            }, 100);
 
             term.current.writeln('Welcome to ByteBox Terminal!');
             term.current.writeln("$");
 
+            // Handle window resizing
+            const handleResize = () => {
+                fitAddon.current?.fit();
+            };
+            
+            window.addEventListener('resize', handleResize);
+
             // Handle Cleanup
             return () => {
+                window.removeEventListener('resize', handleResize);
                 term.current?.dispose();
-                fitAddon.current?.dispose();
+                fitAddon.current = null;
             };
         }
     }, []);

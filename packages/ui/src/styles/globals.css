@@ -1,0 +1,65 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+/* @import "tailwindcss/preflight"; */
+/* @tailwind utilities; */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: 255 255 255; /* White */
+  --foreground: 37 37 37; /* Dark gray */
+  --card: 255 255 255;
+  --card-foreground: 37 37 37;
+  --popover: 255 255 255;
+  --popover-foreground: 37 37 37;
+  --primary: 52 52 52;
+  --primary-foreground: 251 251 251;
+  --secondary: 247 247 247;
+  --secondary-foreground: 52 52 52;
+  --muted: 247 247 247;
+  --muted-foreground: 142 142 142;
+  --accent: 247 247 247;
+  --accent-foreground: 52 52 52;
+  --destructive: 147 63 64;
+  --destructive-foreground: 147 63 64;
+  --border: 235 235 235;
+  --input: 235 235 235;
+  --ring: 181 181 181;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 37 37 37;
+  --foreground: 251 251 251;
+  --card: 37 37 37;
+  --card-foreground: 251 251 251;
+  --popover: 37 37 37;
+  --popover-foreground: 251 251 251;
+  --primary: 251 251 251;
+  --primary-foreground: 52 52 52;
+  --secondary: 69 69 69;
+  --secondary-foreground: 251 251 251;
+  --muted: 69 69 69;
+  --muted-foreground: 181 181 181;
+  --accent: 69 69 69;
+  --accent-foreground: 251 251 251;
+  --destructive: 101 36 36;
+  --destructive-foreground: 163 60 61;
+  --border: 69 69 69;
+  --input: 69 69 69;
+  --ring: 112 112 112;
+}
+
+/* Base styles that don't rely on utility classes */
+* {
+  border-color: rgb(var(--border) / 0.5);
+  outline-color: rgb(var(--ring) / 0.5);
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
