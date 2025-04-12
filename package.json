@@ -1,6 +1,10 @@
 {
   "name": "bytesbox",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -13,7 +17,7 @@
     "turbo": "^2.5.0",
     "typescript": "5.8.2"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "npm@10.8.1",
   "engines": {
     "node": ">=18"
   }
