@@ -1,54 +1,91 @@
-# React + TypeScript + Vite
+# BytesBox Web Interface
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The BytesBox web interface is a modern, responsive frontend application that provides the user interface for the BytesBox code execution and collaboration platform.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Code Editor**: Built with Monaco Editor for a powerful IDE-like experience
+- **Terminal Emulation**: Interactive terminal using xterm.js for command execution
+- **File Tree**: Visual representation of project file structure
+- **Tabs**: Multi-file workspace management with tabs
+- **Themes**: Light and dark mode support
+- **Real-time Collaboration**: Work together with others in real-time
 
-## Expanding the ESLint configuration
+## Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The web application is structured as follows:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+web/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # UI components
+│   │   ├── Editor/      # Code editor component
+│   │   ├── FileTree/    # File browser component
+│   │   ├── Tabs/        # Tab management component
+│   │   └── Terminal/    # Terminal emulation component
+│   ├── lib/             # Utility libraries
+│   ├── pages/           # Page components
+│   ├── services/        # API service integrations
+│   ├── store/           # State management with Recoil
+│   └── styles/          # CSS and style definitions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS
+- **State Management**: Recoil
+- **Editor**: Monaco Editor
+- **Terminal**: xterm.js
+- **Routing**: React Router DOM
+- **Icons**: Lucide React
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Development
+
+### Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
 ```
+
+2. Start the development server:
+
+```bash
+npm run dev
+```
+
+3. Open your browser and navigate to `http://localhost:5173`
+
+### Building for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The output will be in the `dist` directory.
+
+### Environment Variables
+
+The web application can be configured using the following environment variables:
+
+- `VITE_API_URL`: URL of the API service
+- `VITE_EXECUTER_URL`: URL of the code execution service
+- `VITE_COLLAB_URL`: URL of the collaboration server
+
+## Integration with Other Services
+
+The web application communicates with several backend services:
+
+- **API Service**: For user authentication and project management
+- **Executor Service**: For running code in various languages
+- **Collaboration Server**: For real-time collaboration features
+
+## Contributing
+
+When contributing to this part of the project, please follow the established component structure and use the shared UI components from the `@repo/ui` package when appropriate.

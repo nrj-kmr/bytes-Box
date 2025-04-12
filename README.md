@@ -1,84 +1,107 @@
-# Turborepo starter
+# BytesBox
 
-This Turborepo starter is maintained by the Turborepo core team.
+BytesBox is a collaborative code execution and development environment that allows developers to create, share, and execute code in various programming languages. This project is structured as a monorepo using Turborepo for efficient workspace management and dependency sharing.
 
-## Using this example
+![BytesBox Logo](/apps/web/public/byteBox.png)
 
-Run the following command:
+## Project Overview
 
-```sh
-npx create-turbo@latest
+BytesBox consists of several integrated services that work together to provide a seamless coding experience:
+
+- **Web Interface**: A modern React application for code editing, file management, and collaboration
+- **API**: Backend service handling user authentication, project management, and data persistence
+- **Executor**: Service for executing code snippets in various programming languages using Docker containers
+- **Collaboration Server**: Real-time collaboration service enabling multiple users to work on the same code simultaneously
+
+## Project Structure
+
+This monorepo is organized as follows:
+
+```
+bytesbox/
+├── apps/               # Application services
+│   ├── api/            # Backend REST API
+│   ├── collab-server/  # Real-time collaboration server
+│   ├── docs/           # Project documentation
+│   ├── executer/       # Code execution service
+│   └── web/            # Frontend web application
+├── packages/           # Shared libraries and configurations
+│   ├── config/         # Shared configuration files
+│   ├── eslint-config/  # ESLint configurations
+│   ├── types/          # Shared TypeScript type definitions
+│   ├── typescript-config/ # Shared TypeScript configurations
+│   └── ui/             # Shared UI component library
 ```
 
-## What's inside?
+## Technologies
 
-This Turborepo includes the following packages/apps:
+BytesBox is built with a modern tech stack:
 
-### Apps and Packages
+- **Frontend**: React, TypeScript, Vite, TailwindCSS
+- **Backend**: Node.js, Express
+- **Code Execution**: Docker containers for secure code execution
+- **Real-time Collaboration**: WebSockets
+- **Development**: Turborepo, ESLint, TypeScript
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Getting Started
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Prerequisites
 
-### Utilities
+- Node.js (v18 or later)
+- npm (v10 or later)
+- Docker and Docker Compose (for the code execution service)
 
-This Turborepo has some additional tools already setup for you:
+### Installation
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/bytesbox.git
+cd bytesbox
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development environment
+```bash
+npm run dev
+```
+
+## Development
 
 ### Build
 
-To build all apps and packages, run the following command:
+To build all apps and packages:
 
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
+```bash
+npm run build
 ```
 
-### Remote Caching
+### Development Server
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+To start the development servers for all applications:
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+npm run dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### Linting and Type Checking
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
+```bash
+npm run lint
+npm run check-types
 ```
-npx turbo link
-```
 
-## Useful Links
+## Documentation
 
-Learn more about the power of Turborepo:
+For more detailed documentation about the system architecture and individual components, see the [documentation](/apps/docs/system-architecture.md).
 
-- [Tasks](https://turbo.build/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/docs/reference/command-line-reference)
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+[MIT](LICENSE)
