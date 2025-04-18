@@ -4,7 +4,7 @@ import socket from '../socket'
 
 import '@xterm/xterm/css/xterm.css'
 
-const Terminal = () => {
+export const TerminalComponent = () => {
      const terminalRef = useRef();
      const isRendered = useRef(false);
 
@@ -30,5 +30,3 @@ const Terminal = () => {
           <div ref={terminalRef} id="terminal" />
      )
 }
-
-export default Terminal
