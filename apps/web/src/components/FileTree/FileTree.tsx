@@ -1,13 +1,15 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fileTreeState, openTabsState, activeTabState, FileNode } from '../../store/fileSystem';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Icon } from '../Icons';
 import { FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown } from 'lucide-react';
+import { fetchFileTree } from '../../services/fileService';
+import socket from '../../socket';
 
 // Function to determine which icon to use based on file extension
 const getFileIcon = (filename: string) => {
   const extension = filename.split('.').pop()?.toLowerCase();
-  
+
   if (['js', 'jsx', 'ts', 'tsx'].includes(extension || '')) {
     return FileCode;
   } else if (['json'].includes(extension || '')) {
@@ -18,17 +20,44 @@ const getFileIcon = (filename: string) => {
 };
 
 export const FileTree = () => {
-  const [fileTree] = useRecoilState(fileTreeState);
+  const [fileTree, setFileTree] = useRecoilState(fileTreeState);
   const [openTabs, setOpenTabs] = useRecoilState(openTabsState);
   const setActiveTab = useSetRecoilState(activeTabState);
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({});
 
+  // Load file tree on component mount
+  useEffect(() => {
+    const loadFileTree = async () => {
+      const tree = await fetchFileTree();
+      setFileTree(tree);
+    };
+
+    loadFileTree();
+
+    // Listen for file system changes
+    socket.on('file:refresh', loadFileTree);
+
+    return () => {
+      socket.off('file:refresh', loadFileTree);
+    };
+  }, [setFileTree]);
+
   const handleFileClick = (file: FileNode) => {
-    const alreadyOpen = openTabs.find(tab => tab.id === file.id);
+    // Add path property if it doesn't already exist
+    const fileWithPath = file.path ? file : { ...file, path: generateFilePath(file) };
+
+    const alreadyOpen = openTabs.find(tab => tab.id === fileWithPath.id);
     if (!alreadyOpen) {
-      setOpenTabs([...openTabs, file]);
+      setOpenTabs([...openTabs, fileWithPath]);
     }
-    setActiveTab(file);
+    setActiveTab(fileWithPath);
+  };
+
+  // Function to generate file path (you'll need to implement this based on your tree structure)
+  const generateFilePath = (file: FileNode): string => {
+    // This is a simplified implementation
+    // You might need a more complex one based on your tree structure
+    return `/${file.name}`;
   };
 
   const toggleFolder = (folderId: string) => {
@@ -47,15 +76,15 @@ export const FileTree = () => {
               className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 group"
               onClick={() => toggleFolder(node.id)}
             >
-              <Icon 
-                icon={expandedFolders[node.id] ? ChevronDown : ChevronRight} 
-                size={16} 
-                className="mr-1 text-[rgb(var(--muted-foreground))]" 
+              <Icon
+                icon={expandedFolders[node.id] ? ChevronDown : ChevronRight}
+                size={16}
+                className="mr-1 text-[rgb(var(--muted-foreground))]"
               />
-              <Icon 
-                icon={expandedFolders[node.id] ? FolderOpen : Folder} 
-                size={16} 
-                className="mr-1.5 text-[rgb(var(--accent-foreground))]" 
+              <Icon
+                icon={expandedFolders[node.id] ? FolderOpen : Folder}
+                size={16}
+                className="mr-1.5 text-[rgb(var(--accent-foreground))]"
               />
               <span className="text-sm">{node.name}</span>
             </div>
@@ -70,10 +99,10 @@ export const FileTree = () => {
             className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 text-sm"
             onClick={() => handleFileClick(node)}
           >
-            <Icon 
-              icon={getFileIcon(node.name)} 
-              size={16} 
-              className="mr-1.5 text-[rgb(var(--muted-foreground))]" 
+            <Icon
+              icon={getFileIcon(node.name)}
+              size={16}
+              className="mr-1.5 text-[rgb(var(--muted-foreground))]"
               strokeWidth={1.5}
             />
             {node.name}

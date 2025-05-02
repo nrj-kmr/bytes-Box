@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { activeTabState } from "../store/fileSystem";
 import { FileTree } from "../components/FileTree/FileTree";
@@ -15,6 +15,7 @@ import {
 } from "../components/Icons";
 import { ChevronFirst, Files, Settings, CircleUserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import socket from "../socket";
 
 export const WorkSpace = () => {
     const activeFile = useRecoilValue(activeTabState);
@@ -23,6 +24,19 @@ export const WorkSpace = () => {
     const [terminalHeight, setTerminalHeight] = useState(240);
 
     const navigate = useNavigate();
+
+    // Initialize socket connection
+    useEffect(() => {
+        // make sure socket is connected
+        if (socket.disconnected) {
+            socket.connect();
+        }
+
+        return () => {
+            // cleanup socket connection when component unmounts
+            socket.disconnect();
+        }
+    }, []);
 
     // Terminal drag resize handler
     const handleTerminalResize = (e: React.MouseEvent) => {
@@ -38,7 +52,7 @@ export const WorkSpace = () => {
             <div className="w-12 bg-[rgb(var(--secondary))] h-full flex flex-col items-center py-2 gap-1 border-r border-[rgb(var(--border))]">
                 <div className="py-3 flex flex-col items-center">
                     <div onClick={() => navigate('/')}
-                    className="w-7 h-7 rounded-md mb-4 cursor-pointer">
+                        className="w-7 h-7 rounded-md mb-4 cursor-pointer">
                         <img src="byteBox.png" alt="Logo" />
                     </div>
                 </div>
