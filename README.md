@@ -2,7 +2,8 @@
 
 BytesBox is a collaborative code execution and development environment that allows developers to create, share, and execute code in various programming languages. This project is structured as a monorepo using Turborepo for efficient workspace management and dependency sharing.
 
-![BytesBox Logo](/apps/web/public/byteBox.png)
+<!-- ![BytesBox Logo](/apps/web/public/byteBox.png) -->
+<img src="/apps/web/public/byteBox.png" alt="BytesBox Logo" width="200" />
 
 ## Project Overview
 
@@ -11,7 +12,6 @@ BytesBox consists of several integrated services that work together to provide a
 - **Web Interface**: A modern React application for code editing, file management, and collaboration
 - **API**: Backend service handling user authentication, project management, and data persistence
 - **Executor**: Service for executing code snippets in various programming languages using Docker containers
-- **Collaboration Server**: Real-time collaboration service enabling multiple users to work on the same code simultaneously
 
 ## Project Structure
 
@@ -21,7 +21,6 @@ This monorepo is organized as follows:
 bytesbox/
 ├── apps/               # Application services
 │   ├── api/            # Backend REST API
-│   ├── collab-server/  # Real-time collaboration server
 │   ├── docs/           # Project documentation
 │   ├── executer/       # Code execution service
 │   └── web/            # Frontend web application
@@ -40,8 +39,7 @@ BytesBox is built with a modern tech stack:
 - **Frontend**: React, TypeScript, Vite, TailwindCSS
 - **Backend**: Node.js, Express
 - **Code Execution**: Docker containers for secure code execution
-- **Real-time Collaboration**: WebSockets
-- **Development**: Turborepo, ESLint, TypeScript
+- **Development**: Turborepo, TypeScript
 
 ## Getting Started
 
@@ -87,13 +85,6 @@ To start the development servers for all applications:
 npm run dev
 ```
 
-### Linting and Type Checking
-
-```bash
-npm run lint
-npm run check-types
-```
-
 ## Documentation
 
 For more detailed documentation about the system architecture and individual components, see the [documentation](/apps/docs/system-architecture.md).
@@ -101,7 +92,3 @@ For more detailed documentation about the system architecture and individual com
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-[MIT](LICENSE)
