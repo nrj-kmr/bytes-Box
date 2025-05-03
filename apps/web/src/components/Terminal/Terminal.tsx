@@ -1,72 +1,61 @@
 import { useEffect, useRef } from 'react';
 import { Terminal } from '@xterm/xterm';
+import socket from '../../socket'
 import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
-import { io } from 'socket.io-client';
 
 export const TerminalComponent = () => {
     const terminalRef = useRef<HTMLDivElement | null>(null);
-    const term = useRef<Terminal | null>(null);
+    const isRendered = useRef<boolean>(false);
     const fitAddon = useRef<FitAddon | null>(null);
-    const socket = useRef<any>();
+    // const term = useRef<Terminal | null>(null);
 
     useEffect(() => {
-        if (terminalRef.current) {
-            term.current = new Terminal({
-                cursorBlink: true,
-                fontFamily: 'monospace',
-                rows: 20,
-                theme: {
-                    background: '#1e1e1e',
-                    foreground: '#ffffff',
-                    cursor: '#ffffff',
-                },
-            });
+        // Prevent multiple terminal instances
+        if (isRendered.current || !terminalRef.current) return;
+        isRendered.current = true;
 
-            fitAddon.current = new FitAddon();
-            term.current.loadAddon(fitAddon.current);
-            term.current.open(terminalRef.current);
+        // Initialize terminal
+        const term = new Terminal({
+            rows: 20,
+            cursorBlink: true,
+            fontFamily: 'monospace',
+            theme: {
+                background: '#1e1e1e',
+                foreground: '#ffffff',
+                cursor: '#ffffff',
+            },
+        });
+        term.open(terminalRef.current);
 
-            socket.current = io('http://localhost:4000');
+        // Add fit addon for responsive terminal
+        fitAddon.current = new FitAddon();
+        term.loadAddon(fitAddon.current);
 
-            socket.current.on('output', (data: string) => {
-                term.current?.write(data);
-            })
+        // Try to fit the terminal in the container
+        setTimeout(() => {
+            fitAddon.current?.fit();
+        }, 100);
 
-            // Use setTimeout to ensure the terminal element is properly mounted
-            setTimeout(() => {
-                if (fitAddon.current) {
-                    try {
-                        fitAddon.current.fit();
-                    } catch (err) {
-                        console.error('Failed to fit terminal:', err);
-                    }
-                }
-            }, 100);
+        term.writeln('Welcome to ByteBox Terminal!');
 
-            term.current.writeln('Welcome to ByteBox Terminal!');
-            term.current.writeln("$");
+        // Send userinput to the server
+        term.onData((data: string) => {
+            socket.emit('terminal:write', data);
+        });
 
-            term.current.onData((data) => {
-                socket.current.emit('input', data);
-            });
-
-            // Handle window resizing
-            const handleResize = () => {
-                fitAddon.current?.fit();
-            };
-
-            window.addEventListener('resize', handleResize);
-
-            // Handle Cleanup
-            return () => {
-                window.removeEventListener('resize', handleResize);
-                term.current?.dispose();
-                fitAddon.current = null;
-                socket.current.disconnect();
-            };
+        // Display data from the server
+        const handleTerminalData = (data: string) => {
+            term.write(data);
         }
+        socket.on('terminal:data', handleTerminalData);
     }, []);
 
-    return <div className='h-64 w-full bg-black' ref={terminalRef} id="terminal" />
+    return (
+        <div
+            ref={terminalRef}
+            id="terminal"
+            className='h-63 w-full bg-black'
+        />
+    );
 }

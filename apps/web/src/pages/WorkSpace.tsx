@@ -21,7 +21,7 @@ export const WorkSpace = () => {
     const activeFile = useRecoilValue(activeTabState);
     const [showTerminal, setShowTerminal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [terminalHeight, setTerminalHeight] = useState(240);
+    const [terminalHeight, setTerminalHeight] = useState(288);
 
     const navigate = useNavigate();
 
