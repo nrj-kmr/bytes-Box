@@ -1,16 +1,25 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fileTreeState, openTabsState, activeTabState, FileNode } from '../../store/fileSystem';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Icon } from '../Icons';
-import { FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown } from 'lucide-react';
-import { fetchFileTree } from '../../services/fileService';
+import { FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown, LucideIcon } from 'lucide-react';
 import socket from '../../socket';
 
-// Function to determine which icon to use based on file extension
-const getFileIcon = (filename: string) => {
-  const extension = filename.split('.').pop()?.toLowerCase();
+interface FileTreeNode {
+  [key: string]: FileNode | null;
+}
 
-  if (['js', 'jsx', 'ts', 'tsx'].includes(extension || '')) {
+interface FileObject {
+  id: string;
+  name: string;
+  path: string;
+}
+
+// Function to determine which icon to use based on file extension
+const getFileIcon = (filename: string): LucideIcon => {
+  const extension = filename.split('.').pop()?.toLowerCase() || '';
+
+  if (['js', 'jsx', 'ts', 'tsx'].includes(extension)) {
     return FileCode;
   } else if (['json'].includes(extension || '')) {
     return FileJson;
@@ -19,102 +28,145 @@ const getFileIcon = (filename: string) => {
   }
 };
 
-export const FileTree = () => {
+// Function to generate proper path for files based on their location in tree
+const generateFilePath = (parentPath: string, fileName: string): string => {
+  return parentPath === '/' ? `/${fileName}` : `${parentPath}/${fileName}`;
+};
+
+export const FileTree: React.FC = () => {
   const [fileTree, setFileTree] = useRecoilState(fileTreeState);
   const [openTabs, setOpenTabs] = useRecoilState(openTabsState);
   const setActiveTab = useSetRecoilState(activeTabState);
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Load file tree on component mount
-  useEffect(() => {
-    const loadFileTree = async () => {
-      const tree = await fetchFileTree();
-      setFileTree(tree);
-    };
+  // Fetch file tree from the server
+  const fetchFileTree = useCallback(async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await fetch("http://localhost:4000/files");
 
-    loadFileTree();
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+      }
 
-    // Listen for file system changes
-    socket.on('file:refresh', loadFileTree);
+      const result = await response.json();
 
-    return () => {
-      socket.off('file:refresh', loadFileTree);
-    };
+      if (!result.tree) {
+        throw new Error("Invalid response format: missing tree data");
+      }
+
+      setFileTree(result.tree as FileTreeNode);
+    } catch (error) {
+      console.error("Failed to fetch file tree:", error);
+      setError(error instanceof Error ? error.message : "Unknown error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   }, [setFileTree]);
 
-  const handleFileClick = (file: FileNode) => {
-    // Add path property if it doesn't already exist
-    const fileWithPath = file.path ? file : { ...file, path: generateFilePath(file) };
+  useEffect(() => {
+    fetchFileTree();
+    socket.on('file:refresh', fetchFileTree);
 
-    const alreadyOpen = openTabs.find(tab => tab.id === fileWithPath.id);
+    return () => {
+      socket.off('file:refresh', fetchFileTree);
+    };
+  }, [fetchFileTree]);
+
+  const handleFileClick = (file: FileObject): void => {
+    if (!file.id || !file.name) return;
+
+    const alreadyOpen = openTabs.find(tab => tab.id === file.id);
     if (!alreadyOpen) {
-      setOpenTabs([...openTabs, fileWithPath]);
+      setOpenTabs([...openTabs, { ...file, type: 'file' }]);
     }
-    setActiveTab(fileWithPath);
+    setActiveTab({ ...file, type: 'file' });
   };
 
-  // Function to generate file path (you'll need to implement this based on your tree structure)
-  const generateFilePath = (file: FileNode): string => {
-    // This is a simplified implementation
-    // You might need a more complex one based on your tree structure
-    return `/${file.name}`;
-  };
+  const toggleFolder = (folderId: string): void => {
+    if (!folderId) return;
 
-  const toggleFolder = (folderId: string) => {
     setExpandedFolders(prev => ({
       ...prev,
       [folderId]: !prev[folderId]
     }));
   };
 
-  const renderTree = (nodes: FileNode[]) => {
-    return nodes.map(node => (
-      <div key={node.id} className="pl-1">
-        {node.type === 'folder' ? (
-          <div>
+  const renderTree = (nodes: FileTreeNode, parentPath: string = '/'): JSX.Element[] => {
+    if (!nodes || typeof nodes !== 'object') return [];
+
+    return Object.keys(nodes).map((key) => {
+      const node = nodes[key];
+      const isFolder = node !== null;
+      const currentPath = generateFilePath(parentPath, key);
+
+      return (
+        <div key={currentPath} className="pl-1">
+          {isFolder ? (
+            <div>
+              <div
+                className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 group"
+                onClick={() => toggleFolder(currentPath)}
+              >
+                <Icon
+                  icon={expandedFolders[currentPath] ? ChevronDown : ChevronRight}
+                  size={16}
+                  className="mr-1 text-[rgb(var(--muted-foreground))]"
+                />
+                <Icon
+                  icon={expandedFolders[currentPath] ? FolderOpen : Folder}
+                  size={16}
+                  className="mr-1.5 text-[rgb(var(--accent-foreground))]"
+                />
+                <span className="text-sm">{key}</span>
+              </div>
+              {expandedFolders[currentPath] && node && (
+                <div className="pl-4 border-l border-[rgb(var(--border))] ml-2">
+                  {renderTree(node, currentPath)}
+                </div>
+              )}
+            </div>
+          ) : (
             <div
-              className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 group"
-              onClick={() => toggleFolder(node.id)}
+              className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 text-sm"
+              onClick={() => handleFileClick({ id: currentPath, name: key, path: currentPath })}
             >
               <Icon
-                icon={expandedFolders[node.id] ? ChevronDown : ChevronRight}
+                icon={getFileIcon(key)}
                 size={16}
-                className="mr-1 text-[rgb(var(--muted-foreground))]"
+                className="mr-1.5 text-[rgb(var(--muted-foreground))]"
+                strokeWidth={1.5}
               />
-              <Icon
-                icon={expandedFolders[node.id] ? FolderOpen : Folder}
-                size={16}
-                className="mr-1.5 text-[rgb(var(--accent-foreground))]"
-              />
-              <span className="text-sm">{node.name}</span>
+              {key}
             </div>
-            {expandedFolders[node.id] && node.children && (
-              <div className="pl-4 border-l border-[rgb(var(--border))] ml-2">
-                {renderTree(node.children)}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div
-            className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 text-sm"
-            onClick={() => handleFileClick(node)}
-          >
-            <Icon
-              icon={getFileIcon(node.name)}
-              size={16}
-              className="mr-1.5 text-[rgb(var(--muted-foreground))]"
-              strokeWidth={1.5}
-            />
-            {node.name}
-          </div>
-        )}
-      </div>
-    ));
+          )}
+        </div>
+      );
+    });
   };
 
+  if (isLoading && Object.keys(fileTree).length === 0) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="text-[rgb(var(--muted-foreground))] text-sm">Loading files...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-2 text-red-500 text-sm">
+        Error loading files: {error}
+      </div>
+    );
+  }
+
   return (
-    <div className="p-2 h-full">
-      {fileTree.length > 0 ? (
+    <div className="p-2 h-full overflow-auto">
+      {Object.keys(fileTree).length > 0 ? (
         renderTree(fileTree)
       ) : (
         <div className="text-center text-[rgb(var(--muted-foreground))] p-4 text-sm">

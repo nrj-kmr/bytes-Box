@@ -11,10 +11,14 @@ export interface FileNode {
   path?: string;
 }
 
+interface FileTreeNode {
+  [key: string]: FileTreeNode | null;
+}
+
 // For storing the filetree from API
-export const fileTreeState = atom<FileNode[]>({
+export const fileTreeState = atom<FileTreeNode>({
   key: 'fileTreeState',
-  default: [],
+  default: {},
 });
 
 // Store Open tabs
