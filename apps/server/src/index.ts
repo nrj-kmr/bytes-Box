@@ -117,7 +117,7 @@ io.on('connection', (socket) => {
     socket.emit('terminal:data', `Current directory: ${currentCwd}\r\n`);
 
     socket.on('file:change', async ({ path, content }) => {
-        await fs.writeFile(`./user${path}`, content);
+        await fs.writeFile(`../user-storage${path}`, content);
     });
 
     socket.on('terminal:write', (data) => {

@@ -58,7 +58,7 @@ export const FileTree: React.FC = () => {
         throw new Error("Invalid response format: missing tree data");
       }
 
-      setFileTree(result.tree as FileTreeNode);
+      setFileTree(result.tree);
     } catch (error) {
       console.error("Failed to fetch file tree:", error);
       setError(error instanceof Error ? error.message : "Unknown error occurred");
