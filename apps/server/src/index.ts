@@ -60,7 +60,7 @@ chokidar.watch('./user').on("all", (event, path) => {
 // Improved parsing of terminal output
 ptyProcess.onData((data: string) => {
     lastActivity = Date.now();
-    
+
     // Forward data to clients immediately
     io.emit('terminal:data', data);
 
@@ -70,15 +70,15 @@ ptyProcess.onData((data: string) => {
         directoryChangeInProgress = true;
         commandInProgress = true;
     }
-    
+
     // Look for command completion (prompt pattern)
     if (data.includes(' $ ') && commandInProgress) {
         commandInProgress = false;
-        
+
         if (directoryChangeInProgress) {
             directoryChangeInProgress = false;
             console.log('Directory change command completed');
-            
+
             // Wait a bit for the shell to stabilize
             setTimeout(() => {
                 // Use a unique marker with timestamp to avoid confusion with other output
@@ -88,13 +88,13 @@ ptyProcess.onData((data: string) => {
             }, 200);
         }
     }
-    
+
     // Extract current directory from marker
     if (data.includes('__CWD_MARKER_')) {
         // Use a more flexible regex that can handle partial data chunks
         const markerPattern = /__CWD_MARKER_\d+__(.+?)__CWD_MARKER_\d+__/;
         const match = data.match(markerPattern);
-        
+
         if (match && match[1]) {
             const newCwd = match[1].trim();
             if (currentCwd !== newCwd) {
@@ -121,10 +121,10 @@ io.on('connection', (socket) => {
 
     // Send the current files
     socket.emit('file:refresh');
-    
+
     // Let client know current directory
     socket.emit('terminal:data', `Current directory: ${currentCwd}\r\n`);
-    
+
     // Force pwd output on new connection
     setTimeout(() => {
         ptyProcess.write('pwd\r');
@@ -137,7 +137,7 @@ io.on('connection', (socket) => {
     socket.on('terminal:write', (data) => {
         lastActivity = Date.now();
         ptyProcess.write(data);
-        
+
         // If data looks like it might be a cd command, remember it
         if (data.includes('cd ')) {
             commandInProgress = true;
