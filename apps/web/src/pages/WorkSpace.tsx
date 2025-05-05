@@ -10,7 +10,6 @@ import {
     Icon,
     IconTerminal,
     IconX,
-    IconBranch,
     IconMonitor
 } from "../components/Icons";
 import { ChevronFirst, Files, Settings, CircleUserRound } from "lucide-react";
@@ -21,7 +20,7 @@ export const WorkSpace = () => {
     const activeFile = useRecoilValue(activeTabState);
     const [showTerminal, setShowTerminal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [terminalHeight, setTerminalHeight] = useState(288);
+    const [terminalHeight] = useState(288);
 
     const navigate = useNavigate();
 
@@ -37,13 +36,6 @@ export const WorkSpace = () => {
             socket.disconnect();
         }
     }, []);
-
-    // Terminal drag resize handler
-    const handleTerminalResize = (e: React.MouseEvent) => {
-        if (e.buttons !== 1) return; // Only resize on left mouse button
-        const newHeight = Math.max(100, Math.min(500, window.innerHeight - e.clientY));
-        setTerminalHeight(newHeight);
-    };
 
     return (
         <div className="flex h-screen bg-[rgb(var(--background))] text-[rgb(var(--foreground))] overflow-hidden">
@@ -144,9 +136,7 @@ export const WorkSpace = () => {
                             style={{ height: `${terminalHeight}px` }}
                         >
                             <div
-                                className="h-8 bg-[rgb(var(--secondary))] flex items-center px-3 justify-between cursor-ns-resize select-none"
-                                onMouseDown={() => { }}
-                                onMouseMove={handleTerminalResize}
+                                className="h-7 bg-[rgb(var(--secondary))] flex items-center px-3 justify-between select-none"
                             >
                                 <div className="flex items-center space-x-2">
                                     <Icon icon={IconTerminal} size={14} />
@@ -170,28 +160,22 @@ export const WorkSpace = () => {
                     {/* Status bar - bottom -> dynamically render the info like line number etc */}
                     <div className="h-6 border-t border-[rgb(var(--border))] bg-[rgb(var(--secondary))] flex items-center justify-between px-3 text-xs">
                         <div className="flex items-center space-x-3">
-                            <div className="flex items-center gap-1.5">
-                                <Icon icon={IconBranch} size={12} />
-                                <span>main</span>
-                            </div>
-                            <span className="text-[rgb(var(--muted-foreground))]">TypeScript</span>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            <span>Ln 1, Col 1</span>
-                            <span>Spaces: 2</span>
+                            <span>{activeFile ? `Ln 1, Col 1` : ''}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Terminal Toggle Button - Always visible */}
-            <button
-                className="absolute bottom-10 right-4 bg-[rgb(var(--secondary))] text-xs px-3 py-1.5 rounded flex items-center gap-1 hover:bg-[rgb(var(--muted))] transition-colors shadow-sm z-10"
-                onClick={() => setShowTerminal(!showTerminal)}
-            >
-                <Icon icon={IconTerminal} size={14} />
-                <span>{showTerminal ? "Hide Terminal" : "Show Terminal"}</span>
-            </button>
+            {/* Terminal Toggle Button - Visible only when Terminal is not open */}
+            {!showTerminal && (
+                <button
+                    className="absolute bottom-10 right-4 bg-[rgb(var(--secondary))] text-xs px-3 py-1.5 rounded flex items-center gap-1 hover:bg-[rgb(var(--muted))] transition-colors shadow-sm z-10"
+                    onClick={() => setShowTerminal(!showTerminal)}
+                >
+                    <Icon icon={IconTerminal} size={14} />
+                    <span>{showTerminal ? "Hide Terminal" : "Show Terminal"}</span>
+                </button>
+            )}
         </div>
     );
 };

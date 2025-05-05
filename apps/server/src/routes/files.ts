@@ -33,7 +33,7 @@ async function generateFileTree(directory: string): Promise<FileTree> {
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const fileTree = await generateFileTree('./user');
+        const fileTree = await generateFileTree('../user-storage');
         res.json({ tree: fileTree });
     } catch (error) {
         res.status(500).json({ error: 'Failed to generate file tree', details: (error as Error).message });
@@ -43,7 +43,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/content', async (req: Request, res: Response) => {
     try {
         const filePath = req.query.path;
-        const content = await fs.readFile(`./user${filePath}`, 'utf-8');
+        const content = await fs.readFile(`../user-storage${filePath}`, 'utf-8');
         res.json({ content });
     } catch (error) {
         res.status(500).json({

@@ -10,11 +10,9 @@ import chokidar from 'chokidar';
 import fileRouter from './routes/files'
 
 // store the terminal's current working directory
-let currentCwd = path.resolve(process.env.INIT_CWD || process.cwd(), 'user');
+let currentCwd = path.resolve(process.env.INIT_CWD || process.cwd(), '../user-storage');
 console.log('Initial directory:', currentCwd);
 
-// Send an initialization command to ensure the shell starts with correct directory
-const initCommand = `cd ${currentCwd} && clear\r`;
 const ptyProcess = pty.spawn('bash', [], {
     name: 'xterm-color',
     cols: 80,
@@ -22,18 +20,11 @@ const ptyProcess = pty.spawn('bash', [], {
     cwd: currentCwd,
     env: {
         ...process.env,
-        // Force disable shell history - prevents interference with our parsing
         HISTSIZE: '0',
         HISTFILESIZE: '0',
-        // Set a simple prompt to make our parsing more reliable
         PS1: '\\w $ ',
     }
 });
-
-// Immediately change to the correct directory after spawning
-setTimeout(() => {
-    ptyProcess.write(initCommand);
-}, 100);
 
 // Track if directory is changing
 let directoryChangeInProgress = false;
@@ -125,11 +116,6 @@ io.on('connection', (socket) => {
     // Let client know current directory
     socket.emit('terminal:data', `Current directory: ${currentCwd}\r\n`);
 
-    // Force pwd output on new connection
-    setTimeout(() => {
-        ptyProcess.write('pwd\r');
-    }, 500);
-
     socket.on('file:change', async ({ path, content }) => {
         await fs.writeFile(`./user${path}`, content);
     });
@@ -147,19 +133,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Socket Disconnected', socket.id);
     });
-});
-
-// Add a route to force reset the terminal if needed
-app.get('/reset-terminal', (_req, res) => {
-    try {
-        ptyProcess.write('\x03\x03'); // Send CTRL+C to abort any running command
-        setTimeout(() => {
-            ptyProcess.write(`cd ${currentCwd} && clear\r`);
-        }, 100);
-        res.send({ success: true, message: 'Terminal reset initiated' });
-    } catch (error) {
-        res.status(500).send({ success: false, error: String(error) });
-    }
 });
 
 app.use('/files', fileRouter);
