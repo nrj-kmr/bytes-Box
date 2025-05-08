@@ -20,14 +20,14 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    
+
     /* Path resolution for monorepo */
     "baseUrl": ".",
     "paths": {
       "@repo/ui/*": ["../../packages/ui/src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../../packages/ui/src/components/Appbar.tsx", "src/components/Login.tsx", "src/lib/firebase-config.ts"],
   "references": [
     {
       "path": "../../packages/ui/tsconfig.json"

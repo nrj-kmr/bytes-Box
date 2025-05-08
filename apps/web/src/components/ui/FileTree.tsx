@@ -1,6 +1,6 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fileTreeState, openTabsState, activeTabState, FileNode } from '../../store/fileSystem';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Icon } from '../Icons';
 import { FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown, LucideIcon } from 'lucide-react';
 import socket from '../../socket';
@@ -41,8 +41,7 @@ export const FileTree: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch file tree from the server
-  const fetchFileTree = useCallback(async (): Promise<void> => {
+  const fetchFileTree = async (): Promise<void> => {
     try {
       setIsLoading(true);
       setError(null);
@@ -65,7 +64,7 @@ export const FileTree: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [setFileTree]);
+  }
 
   useEffect(() => {
     fetchFileTree();

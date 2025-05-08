@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { activeTabState } from "../store/fileSystem";
-import { FileTree } from "../components/FileTree/FileTree";
-import { Tabs } from "../components/Tabs/Tabs";
-import { CodeEditor } from "../components/Editor/Editor";
-import { TerminalComponent } from "../components/Terminal/Terminal";
+import { FileTree } from "../components/ui/FileTree";
+import { Tabs } from "../components/ui/Tabs";
+import { CodeEditor } from "../components/ui/CodeEditor";
+import { TerminalComponent } from "../components/ui/Terminal";
 import { ThemeToggle } from "../components/ThemeToggle";
 import {
     Icon,
@@ -26,13 +26,11 @@ export const WorkSpace = () => {
 
     // Initialize socket connection
     useEffect(() => {
-        // make sure socket is connected
         if (socket.disconnected) {
             socket.connect();
         }
 
         return () => {
-            // cleanup socket connection when component unmounts
             socket.disconnect();
         }
     }, []);

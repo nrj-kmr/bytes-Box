@@ -2,7 +2,7 @@
 export * from './lib/utils';
 
 // UI Components
-export * from './button';
-export * from './card';
+export * from './components/button';
+export * from './components/card';
 
 // More components will be exported here as they are added

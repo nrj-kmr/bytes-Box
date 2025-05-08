@@ -1,5 +1,10 @@
 import { atom } from "recoil";
 
+export const editorOpenState = atom<boolean>({
+    key: "editorOpenState",
+    default: false
+})
+
 // Tracks the current active file of the editor
 export const editorContentState = atom<string>({
     key: "editorContentState",

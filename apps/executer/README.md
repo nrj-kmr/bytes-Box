@@ -35,7 +35,7 @@ executer/
 - **Runtime**: Node.js
 - **Framework**: Express
 - **Containerization**: Docker
-- **API**: RESTful API with JSON payloads
+- **Server APIs**: RESTful API with JSON payloads
 - **Security**: JWT authentication, container isolation
 
 ## API Endpoints

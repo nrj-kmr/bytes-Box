@@ -8,7 +8,6 @@ export const TerminalComponent = () => {
     const terminalRef = useRef<HTMLDivElement | null>(null);
     const isRendered = useRef<boolean>(false);
     const fitAddon = useRef<FitAddon | null>(null);
-    // const term = useRef<Terminal | null>(null);
 
     useEffect(() => {
         // Prevent multiple terminal instances
@@ -28,23 +27,19 @@ export const TerminalComponent = () => {
         });
         term.open(terminalRef.current);
 
-        // Add fit addon for responsive terminal
         fitAddon.current = new FitAddon();
         term.loadAddon(fitAddon.current);
 
-        // Try to fit the terminal in the container
         setTimeout(() => {
             fitAddon.current?.fit();
         }, 100);
 
-        term.writeln('Welcome to ByteBox Terminal!');
+        term.write(`Welcome to ByteBox Terminal!`);
 
-        // Send userinput to the server
         term.onData((data: string) => {
             socket.emit('terminal:write', data);
         });
 
-        // Display data from the server
         const handleTerminalData = (data: string) => {
             term.write(data);
         }

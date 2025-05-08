@@ -10,7 +10,7 @@ BytesBox is a collaborative code execution and development environment that allo
 BytesBox consists of several integrated services that work together to provide a seamless coding experience:
 
 - **Web Interface**: A modern React application for code editing, file management, and collaboration
-- **API**: Backend service handling user authentication, project management, and data persistence
+- **SERVER**: Backend service handling user authentication, project management, and data persistence
 - **Executor**: Service for executing code snippets in various programming languages using Docker containers
 
 ## Project Structure
@@ -20,7 +20,7 @@ This monorepo is organized as follows:
 ```
 bytesbox/
 ├── apps/               # Application services
-│   ├── api/            # Backend REST API
+│   ├── server/         # Backend REST server APIs
 │   ├── docs/           # Project documentation
 │   ├── executer/       # Code execution service
 │   └── web/            # Frontend web application

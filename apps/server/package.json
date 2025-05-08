@@ -1,6 +1,6 @@
 {
-  "name": "api",
-  "version": "1.0.0",
+  "name": "server",
+  "version": "0.0.0",
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist && tsc --build",
@@ -12,9 +12,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "The API service is the core backend component of the BytesBox platform that handles user authentication, project management, data persistence, and serves as the central communication hub between various other services.",
+  "description": "Server for BytesBox IDE",
   "dependencies": {
-    "@prisma/client": "^6.6.0",
     "bcryptjs": "^3.0.2",
     "chokidar": "^4.0.3",
     "concurrently": "^9.1.2",
@@ -22,14 +21,14 @@
     "dockerode": "^4.0.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "firebase-admin": "^13.3.0",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.1",
     "node-pty": "^1.0.0",
-    "prisma": "^6.6.0",
-    "rimraf": "^6.0.1",
+    "rimraf": "^5.0.5",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.17",
     "@types/dockerode": "^3.3.38",
     "@types/express": "^5.0.1",

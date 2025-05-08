@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@repo/ui";
-import { ThemeToggle } from "../components/ThemeToggle";
-import { LogIn } from "lucide-react";
+import { Appbar } from "../components/ui/Appbar";
 
 export const HomePage = () => {
     const navigate = useNavigate();
@@ -9,24 +8,8 @@ export const HomePage = () => {
     return (
         <div className="flex flex-col min-h-screen bg-background text-foreground">
             {/* App Bar */}
-            <div className="w-full h-16 bg-background flex items-center justify-between px-6">
-                <div className="flex items-center gap-2">
-                    <img src="byteBox.png" alt="Logo" className="w-8 h-8" />
-                    <span className="text-lg font-semibold">BytesBox</span>
-                </div>
-                <div className="flex items-center gap-4">
-                    <ThemeToggle />
-                    <Button 
-                        variant="default"
-                        className="flex items-center gap-2 px-2"
-                        onClick={() => {}}
-                    >
-                        <LogIn size={16} />
-                        <span>Sign In</span>
-                    </Button>
-                </div>
-            </div>
-            
+            <Appbar/>
+
             {/* Main Content */}
             <div className="flex flex-col items-center justify-center flex-1 p-4">
                 <img

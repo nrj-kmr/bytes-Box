@@ -12,11 +12,10 @@ The API service is the core backend component of the BytesBox platform that hand
 
 ## Architecture
 
-The API service follows a clean architecture pattern and is structured as follows:
+The SERVER API service follows a clean architecture pattern and is structured as follows:
 
 ```
-api/
-├── prisma/             # Database schema and migrations
+server/
 ├── src/
 │   ├── config/         # Application configuration
 │   ├── controllers/    # Request handlers
@@ -102,35 +101,21 @@ npx prisma migrate dev
 npm run dev
 ```
 
-The API service will be available at `http://localhost:3000` by default.
-
-### Database Migrations
-
-When changing the database schema:
-
-```bash
-# Generate a migration
-npx prisma migrate dev --name description-of-changes
-
-# Apply migrations
-npx prisma migrate deploy
-```
+The Server API service will be available at `http://localhost:4000` by default.
 
 ## Environment Variables
 
 The API service can be configured using the following environment variables:
 
-- `PORT`: The port on which the service listens (default: 3000)
-- `DATABASE_URL`: PostgreSQL connection string
+- `PORT`: The port on which the service listens (default: 4000)
+- `DATABASE_URL`: MongoDB connection string
 - `JWT_SECRET`: Secret key for JWT signing
 - `JWT_EXPIRES_IN`: Token expiration time (default: '1d')
 - `EXECUTOR_SERVICE_URL`: URL of the executor service
-- `COLLAB_SERVICE_URL`: URL of the collaboration service
 
 ## Integration with Other Services
 
-The API service integrates with:
+The Server API service integrates with:
 
 - **Executor Service**: For executing code in various programming languages
-- **Collaboration Service**: For real-time collaboration features
 - **Web Frontend**: Serves as the backend for the web application
