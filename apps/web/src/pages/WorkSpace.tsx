@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { activeTabState } from "../store/fileSystem";
 import { FileTree } from "../components/ui/FileTree";
 import { Tabs } from "../components/ui/Tabs";
@@ -11,7 +11,7 @@ import {
     IconTerminal,
     IconX,
     IconMonitor
-} from "../components/Icons";
+} from "../components/ui/LucidIcons";
 import { ChevronFirst, Files, Settings, CircleUserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import socket from "../socket";
@@ -67,7 +67,10 @@ export const WorkSpace = () => {
                 <div className="flex-1"></div>
 
                 {/* User's Info - Give Options in a popup 'onClick' */}
-                <button className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all cursor-pointer">
+                <button
+                onClick={() => navigate('/signin')}
+                className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all cursor-pointer"
+                >
                     <Icon icon={CircleUserRound} size={24} />
                 </button>
 
@@ -155,6 +158,14 @@ export const WorkSpace = () => {
                         </div>
                     )}
 
+                    <button
+                        className="absolute bottom-10 right-4 bg-[rgb(var(--secondary))] text-xs px-3 py-1.5 rounded flex items-center gap-1 hover:bg-[rgb(var(--muted))] transition-colors shadow-sm z-10"
+                        onClick={() => setShowTerminal(!showTerminal)}
+                    >
+                        <Icon icon={IconTerminal} size={14} />
+                        <span>{showTerminal ? "Hide Terminal" : "Show Terminal"}</span>
+                    </button>
+
                     {/* Status bar - bottom -> dynamically render the info like line number etc */}
                     <div className="h-6 border-t border-[rgb(var(--border))] bg-[rgb(var(--secondary))] flex items-center justify-between px-3 text-xs">
                         <div className="flex items-center space-x-3">
@@ -163,17 +174,6 @@ export const WorkSpace = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Terminal Toggle Button - Visible only when Terminal is not open */}
-            {!showTerminal && (
-                <button
-                    className="absolute bottom-10 right-4 bg-[rgb(var(--secondary))] text-xs px-3 py-1.5 rounded flex items-center gap-1 hover:bg-[rgb(var(--muted))] transition-colors shadow-sm z-10"
-                    onClick={() => setShowTerminal(!showTerminal)}
-                >
-                    <Icon icon={IconTerminal} size={14} />
-                    <span>{showTerminal ? "Hide Terminal" : "Show Terminal"}</span>
-                </button>
-            )}
         </div>
     );
 };

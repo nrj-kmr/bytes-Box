@@ -1,7 +1,7 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fileTreeState, openTabsState, activeTabState, FileNode } from '../../store/fileSystem';
 import { useState, useEffect } from 'react';
-import { Icon } from '../Icons';
+import { Icon } from './LucidIcons';
 import { FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown, LucideIcon } from 'lucide-react';
 import socket from '../../socket';
 

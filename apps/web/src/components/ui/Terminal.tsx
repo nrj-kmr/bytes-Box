@@ -34,7 +34,7 @@ export const TerminalComponent = () => {
             fitAddon.current?.fit();
         }, 100);
 
-        term.write(`Welcome to ByteBox Terminal!`);
+        term.write(`Welcome to ByteBox Terminal! Press Enter to Continue`);
 
         term.onData((data: string) => {
             socket.emit('terminal:write', data);

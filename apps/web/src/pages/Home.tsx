@@ -21,10 +21,9 @@ export const HomePage = () => {
                 <p className="text-muted-foreground mb-6">Your all-in-one development environment</p>
 
                 <Button
-                    variant="outline"
                     size="lg"
                     onClick={() => navigate('/workspace')}
-                    className="mb-8 cursor-pointer px-2 py-1 rounded-lg"
+                    className="mb-8 cursor-pointer px-2 py-1 rounded-lg bg-black text-white dark:bg-white dark:text-black"
                 >
                     Get Started
                 </Button>

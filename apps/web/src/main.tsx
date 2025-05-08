@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './styles/index.css'
 import App from './App'
 import { RecoilRoot } from 'recoil'
+import { ThemeProvider } from './components/ThemeProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RecoilRoot>
-      <App />
-    </RecoilRoot>
+    <ThemeProvider defaultTheme="dark" storageKey="byteBox-ui-theme">
+      <RecoilRoot>
+        <App />
+      </RecoilRoot>
+    </ThemeProvider>
   </StrictMode>,
 )

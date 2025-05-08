@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { activeTabState, FileNode, openTabsState } from "../../store/fileSystem";
-import { IconX } from "../Icons";
+import { IconX } from "./LucidIcons";
 
 export const Tabs = () => {
     const [openTabs, setOpenTabs] = useRecoilState(openTabsState);
@@ -26,8 +26,8 @@ export const Tabs = () => {
                     onClick={() => handleTabClick(file)}
                     className={`
                         px-3 py-2 flex items-center text-sm border-r border-[rgb(var(--border))] relative min-w-[100px] max-w-[200px]
-                        ${file.id === activeTab?.id 
-                            ? 'bg-[rgb(var(--background))] text-[rgb(var(--foreground))]' 
+                        ${file.id === activeTab?.id
+                            ? 'bg-[rgb(var(--background))] text-[rgb(var(--foreground))]'
                             : 'bg-[rgb(var(--secondary))] text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))]'
                         }
                         ${file.id === activeTab?.id ? 'before:absolute before:bottom-0 before:left-0 before:right-0 before:h-[2px] before:bg-[rgb(var(--primary))]' : ''}

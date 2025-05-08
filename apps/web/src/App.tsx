@@ -1,8 +1,8 @@
 import './styles/App.css'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { WorkSpace } from './pages/WorkSpace';
 import { HomePage } from './pages/Home';
-import { Login } from './components/Login';
+import { SignIn } from './components/Signin';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/workspace" element={<WorkSpace />} />
-        <Route path="/signin" element={<Login />} />
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </BrowserRouter>
   );

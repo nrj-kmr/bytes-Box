@@ -9,6 +9,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "../../apps/web/src/components/Login.tsx"],
+  "include": ["src", "../../apps/web/src/components/Signin.tsx"],
   "exclude": ["node_modules", "dist"]
 }

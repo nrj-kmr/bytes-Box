@@ -11,6 +11,17 @@ export default {
   theme: {
     extend: {
       // You can add web app specific theme extensions here
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+        'wiggle': 'wiggle 0.5s ease-in-out',
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-10deg)' },
+          '75%': { transform: 'rotate(10deg)' },
+        }
+      }
     },
   },
 }
