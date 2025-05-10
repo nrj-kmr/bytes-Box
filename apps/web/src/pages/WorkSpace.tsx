@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { activeTabState } from "../store/fileSystem";
 import { FileTree } from "../components/ui/FileTree";
 import { Tabs } from "../components/ui/Tabs";
@@ -12,12 +12,14 @@ import {
     IconX,
     IconMonitor
 } from "../components/ui/LucidIcons";
-import { ChevronFirst, Files, Settings, CircleUserRound } from "lucide-react";
+import { ChevronFirst, Files, Palette, CircleUserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import socket from "../socket";
+import { editorThemeState } from "../store/editorAtoms";
 
 export const WorkSpace = () => {
     const activeFile = useRecoilValue(activeTabState);
+    const [editorTheme, setEditorTheme] = useRecoilState(editorThemeState)
     const [showTerminal, setShowTerminal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [terminalHeight] = useState(288);
@@ -54,36 +56,30 @@ export const WorkSpace = () => {
                     <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-[rgb(var(--accent-foreground))] rounded-r-md"></div>
                 </button>
 
-                {/* Search Button */}
-                {/* <button className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all">
-                    <Icon icon={Search} />
-                </button> */}
-
-                {/* VCS button */}
-                {/* <button className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all">
-                    <Icon icon={GitCompareArrows} />
-                </button> */}
-
                 <div className="flex-1"></div>
 
                 {/* User's Info - Give Options in a popup 'onClick' */}
                 <button
-                onClick={() => navigate('/signin')}
-                className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all cursor-pointer"
+                    onClick={() => navigate('/signin')}
+                    className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all cursor-pointer"
+                    title="User Info"
                 >
                     <Icon icon={CircleUserRound} size={24} />
                 </button>
 
                 {/* ThemeToggle Button - Positioned around line 80 */}
-                <div className="w-10 h-10 active:translate-y-[1px] text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] mb-2 cursor-pointer">
+                <div className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] m-2 cursor-pointer">
                     <ThemeToggle />
                 </div>
 
-                {/* Settings Button - plan to move theme toggle inside the settins option */}
-                <button className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all mb-2 cursor-pointer">
-                    <Icon icon={Settings} size={24} />
+                {/* Code Editor's Theme */}
+                <button
+                    onClick={() => editorTheme === "vs-dark" ? setEditorTheme('vs-light') : setEditorTheme('vs-dark')}
+                    className="w-10 h-10 flex items-center justify-center hover:bg-[rgb(var(--muted))] rounded-md text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] active:translate-y-[1px] transition-all mb-2 cursor-pointer"
+                    title="Change Code Editor Theme"
+                >
+                    <Palette size={24} />
                 </button>
-
             </div>
 
             {/* Explorer Panel */}

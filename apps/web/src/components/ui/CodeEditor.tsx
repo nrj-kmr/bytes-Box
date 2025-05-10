@@ -4,9 +4,11 @@ import { activeTabState, currentCodeState, originalFileContentState, fileIsSaved
 import { fetchFileContent, saveFileContent } from '../../services/fileService';
 import Editor, { Monaco } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
+import { editorThemeState } from '../../store/editorAtoms';
 
 export const CodeEditor = () => {
   const activeFile = useRecoilValue(activeTabState);
+  const editorTheme = useRecoilValue(editorThemeState);
   const [code, setCode] = useRecoilState(currentCodeState);
   const [originalContent, setOriginalContent] = useRecoilState(originalFileContentState);
   const [isSaved, setIsSaved] = useRecoilState(fileIsSavedState);
@@ -113,7 +115,7 @@ export const CodeEditor = () => {
           value={code}
           onChange={(value) => setCode(value || '')}
           onMount={handleEditorDidMount}
-          theme="vs-dark" // Use 'vs-dark' for dark theme or 'vs-light' for light theme
+          theme={editorTheme}
           options={{
             automaticLayout: true, // Important for resizing
             scrollBeyondLastLine: false,

@@ -27,7 +27,7 @@ export function ThemeToggle() {
       title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       aria-label="Toggle theme"
     >
-      {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+      {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
     </button>
   );
 }
