@@ -6,9 +6,26 @@
     },
     {
       "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "../../packages/ui"
     }
   ],
   "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "rootDir": "src",
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "allowJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "baseUrl": ".",
     "paths": {
       "@repo/ui": [
         "../../packages/ui/src/index.ts"

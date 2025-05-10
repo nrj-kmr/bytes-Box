@@ -8,7 +8,7 @@ export const Appbar = () => {
 
     return (
         <div className="w-full h-16 bg-background flex items-center justify-between px-6">
-            <div className="flex items-center gap-2">
+            <div onClick={() => navigate('/')} className="flex items-center gap-2 cursor-pointer">
                 <img src="byteBox.png" alt="Logo" className="w-8 h-8" />
                 <span className="text-lg font-semibold">BytesBox</span>
             </div>
@@ -16,7 +16,7 @@ export const Appbar = () => {
                 <ThemeToggle />
                 <Button
                     variant="outline"
-                    className="flex items-center gap-2 px-2"
+                    className="flex items-center gap-2 px-2 cursor-pointer"
                     onClick={() => navigate('/signin')}
                 >
                     <LogIn size={16} />

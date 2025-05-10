@@ -24,24 +24,10 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className={`relative h-10 w-10 rounded-md hover:bg-secondary flex items-center justify-center transition-all duration-300 cursor-pointer overflow-hidden`}
       title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
       aria-label="Toggle theme"
     >
-      <Sun
-        className={`absolute h-5 w-5 transition-all duration-300
-            ${isDarkMode
-            ? 'translate-y-10 opacity-0 rotate-90'
-            : 'translate-y-0 opacity-100 rotate-0'
-          }`}
-      />
-      <Moon
-        className={`absolute h-5 w-5 transition-all duration-300
-            ${isDarkMode
-            ? 'translate-y-0 opacity-100 rotate-0'
-            : 'translate-y-10 opacity-0 rotate-90'
-          }`}
-      />
+      {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
     </button>
   );
 }
