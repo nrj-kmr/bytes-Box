@@ -6,14 +6,12 @@ export interface FileNode {
   id: string;
   name: string;
   type: FileType;
-  children?: FileNode[];
+  children?: Record<string, FileNode | null>;
   content?: string; // For files only
   path?: string;
 }
 
-interface FileTreeNode {
-  [key: string]: FileTreeNode | null;
-}
+export type FileTreeNode = Record<string, FileNode | null>;
 
 // For storing the filetree from API
 export const fileTreeState = atom<FileTreeNode>({

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activeTabState } from "../store/fileSystem";
-import { FileTree } from "../components/ui/FileTree";
 import { Tabs } from "../components/ui/Tabs";
 import { CodeEditor } from "../components/ui/CodeEditor";
 import { TerminalComponent } from "../components/ui/Terminal";
@@ -12,10 +11,11 @@ import {
     IconX,
     IconMonitor
 } from "../components/ui/LucidIcons";
-import { ChevronFirst, Files, Palette, CircleUserRound } from "lucide-react";
+import { Files, Palette, CircleUserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import socket from "../socket";
 import { editorThemeState } from "../store/editorAtoms";
+import { FileExplorer } from "../components/ui/FileExplorer";
 
 export const WorkSpace = () => {
     const activeFile = useRecoilValue(activeTabState);
@@ -83,23 +83,11 @@ export const WorkSpace = () => {
             </div>
 
             {/* Explorer Panel */}
-            <div className={`${sidebarCollapsed ? 'w-0 opacity-0' : 'w-64 opacity-100'} border-r border-[rgb(var(--border))] transition-all duration-200 overflow-hidden flex flex-col`}>
-                <div className="p-3 font-medium text-xs tracking-tight uppercase text-[rgb(var(--muted-foreground))] flex items-center justify-between">
-                    <span>Explorer</span>
-                    <div className="flex items-center gap-2">
-                        <button className="p-1 hover:bg-[rgb(var(--muted))] rounded-md">
-                            <Icon
-                                onClick={() => setSidebarCollapsed(prev => !prev)}
-                                icon={ChevronFirst}
-                                size={16}
-                            />
-                        </button>
-                    </div>
-                </div>
-                <div className="overflow-y-auto flex-1">
-                    <FileTree />
-                </div>
-            </div>
+            <FileExplorer
+                sidebarCollapsed={sidebarCollapsed}
+                setSidebarCollapsed={setSidebarCollapsed}
+            />
+
 
             {/* Main Content */}
             <div className="flex flex-1 flex-col overflow-hidden relative">

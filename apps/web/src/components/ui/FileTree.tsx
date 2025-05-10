@@ -1,13 +1,9 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { fileTreeState, openTabsState, activeTabState, FileNode } from '../../store/fileSystem';
+import { fileTreeState, openTabsState, activeTabState, FileTreeNode } from '../../store/fileSystem';
 import { useState, useEffect } from 'react';
 import { Icon } from './LucidIcons';
 import { FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown, LucideIcon } from 'lucide-react';
 import socket from '../../socket';
-
-interface FileTreeNode {
-  [key: string]: FileNode | null;
-}
 
 interface FileObject {
   id: string;
@@ -51,7 +47,7 @@ export const FileTree: React.FC = () => {
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
 
-      const result = await response.json();
+      const result: { tree: FileTreeNode } = await response.json();
 
       if (!result.tree) {
         throw new Error("Invalid response format: missing tree data");
@@ -122,9 +118,9 @@ export const FileTree: React.FC = () => {
                 />
                 <span className="text-sm">{key}</span>
               </div>
-              {expandedFolders[currentPath] && node && (
+              {expandedFolders[currentPath] && node?.children && (
                 <div className="pl-4 border-l border-[rgb(var(--border))] ml-2">
-                  {renderTree(node, currentPath)}
+                  {renderTree(node.children, currentPath)}
                 </div>
               )}
             </div>
