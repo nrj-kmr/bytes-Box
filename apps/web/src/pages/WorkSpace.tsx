@@ -152,8 +152,27 @@ export const WorkSpace = () => {
 
                     {/* Status bar - bottom -> dynamically render the info like line number etc */}
                     <div className="h-6 border-t border-[rgb(var(--border))] bg-[rgb(var(--secondary))] flex items-center justify-between px-3 text-xs">
+                        <div className="flex items-center space-x-2">
+                            {activeFile && (
+                                <span>
+                                    {activeFile.type === 'file' && activeFile.path
+                                        ? activeFile.path.replace(/^\//, '')
+                                        : ''}
+                                </span>
+                            )}
+                        </div>
+
                         <div className="flex items-center space-x-3">
-                            <span>{activeFile ? `Ln 1, Col 1` : ''}</span>
+                            <span>{editorTheme === 'vs-dark' ? 'Dark' : 'Light'}</span>
+                            {activeFile && (
+                                <>
+                                    <span className="text-[rgb(var(--muted-foreground))]">|</span>
+                                    <span>{activeFile.name.split('.').pop()?.toUpperCase() || 'TXT'}</span>
+
+                                    <span className="text-[rgb(var(--muted-foreground))]">|</span>
+                                    <span>UTF-8</span>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
