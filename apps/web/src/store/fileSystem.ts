@@ -31,6 +31,12 @@ export const activeTabState = atom<FileNode | null>({
   default: null,
 });
 
+// Active File or Folder in the File Tree
+export const activeFileState = atom<FileNode | null>({
+  key: 'activeFileState',
+  default: null,
+});
+
 // To track if file is saved
 export const fileIsSavedState = atom<boolean>({
   key: 'fileIsSavedState',

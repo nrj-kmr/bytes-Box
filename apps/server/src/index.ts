@@ -27,6 +27,7 @@ const ptyProcess = pty.spawn('bash', [], {
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 const apiServer = http.createServer(app);
 const io = new SocketServer({
     cors: {

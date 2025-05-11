@@ -19,8 +19,8 @@ async function generateFileTree(directory: string): Promise<FileTree> {
             const stat = await fs.stat(filePath);
 
             if (stat.isDirectory()) {
-                currentTree[file] = {};
-                await buildTree(filePath, currentTree[file] as FileTree);
+                currentTree[file] = { children: {} };
+                await buildTree(filePath, currentTree[file].children as FileTree);
             } else {
                 currentTree[file] = null;
             }
@@ -52,5 +52,35 @@ router.get('/content', async (req: Request, res: Response) => {
         });
     }
 });
+
+router.post('/create', async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { name, type, parentPath } = req.body;
+
+        if (!name || !type) {
+            res.status(400).json({ error: 'Name and type of the item are required!' });
+            return;
+        }
+
+        const targetPath = path.join('../user-storage', parentPath || '', name);
+
+        if (type === 'folder') {
+            await fs.mkdir(targetPath, { recursive: true });
+        } else if (type === 'file') {
+            await fs.mkdir(path.dirname(targetPath), { recursive: true });
+            await fs.writeFile(targetPath, '');
+        } else {
+            res.status(400).json({ error: 'Invalid Type. Must be "file" or "folder".' });
+            return;
+        }
+
+        res.status(201).json({ message: `${type} created successfully`, path: targetPath });
+    } catch (error) {
+        res.status(500).json({
+            error: 'Failed to create item',
+            details: (error as Error).message,
+        });
+    }
+})
 
 export default router;
