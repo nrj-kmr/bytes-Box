@@ -1,17 +1,13 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
 import { auth, googleProvider } from "../lib/firebase-config.ts";
-import { Button } from "@repo/ui";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
-import { Input } from "@repo/ui/components/ui/input"
-import { Label } from "@repo/ui/components/ui/label"
+  Button,
+  Card, CardContent, CardDescription, CardHeader, CardTitle,
+  Input,
+  Label,
+  Tabs, TabsContent, TabsList, TabsTrigger
+} from "@repo/ui";
 import { Appbar } from "./ui/Appbar.tsx";
 
 export const SignIn = () => {
@@ -50,8 +46,7 @@ export const SignIn = () => {
             <TabsTrigger value="login">Log In</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>
           </TabsList>
-
-
+          
           <TabsContent value="login">
             <Card className="rounded-lg p-4">
               <CardHeader>

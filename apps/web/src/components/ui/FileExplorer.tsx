@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fileTreeState, openTabsState, activeTabState, FileTreeNode, activeFileState } from '../../store/fileSystem';
 import { Icon, IconX } from './LucidIcons';
-import { Check, ChevronFirst, FilePlus, FolderPlus, FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronFirst, FilePlus, FolderPlus, FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown } from 'lucide-react';
 import socket from '../../socket';
 
 interface FileExplorerProps {
