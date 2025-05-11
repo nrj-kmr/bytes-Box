@@ -23,7 +23,7 @@ export const HomePage = () => {
                 <Button
                     size="lg"
                     onClick={() => navigate('/workspace')}
-                    className="mb-8 cursor-pointer px-2 py-1 rounded-lg bg-black text-white dark:bg-white dark:text-black"
+                    className="mb-8 cursor-pointer px-4 py-1 rounded-lg bg-black text-white dark:bg-white dark:text-black"
                 >
                     Get Started
                 </Button>
