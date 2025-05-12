@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { fileTreeState, openTabsState, activeTabState, FileTreeNode, activeFileState } from '../../store/fileSystem';
-import { Icon, IconX } from './LucidIcons';
+import { Icon } from './LucidIcons';
 import { ChevronFirst, FilePlus, FolderPlus, FileCode, FileJson, FileText, Folder, FolderOpen, ChevronRight, ChevronDown } from 'lucide-react';
 import socket from '../../socket';
 
@@ -50,9 +50,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
 
    useEffect(() => {
       fetchFileTree();
-
       socket.on('file:refresh', fetchFileTree);
-
       return () => {
          socket.off('file:refresh', fetchFileTree);
       };
@@ -116,28 +114,27 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
       }
    };
 
+   const inputRef = useRef<HTMLInputElement>(null);
+   useEffect(() => {
+      if (isCreating && inputRef.current) {
+         inputRef.current.focus();
+      }
+   }, [isCreating]);
+
    const renderInputField = (): JSX.Element => (
       <div className='px-5'>
          <div className="flex items-center gap-2 mt-2">
             <input
+               ref={inputRef}
                type="text"
                value={newItemName}
                onChange={(e) => setNewItemName(e.target.value)}
                placeholder={`Enter ${isFolder ? 'folder' : 'file'} name`}
                className="flex-1 p-1 border rounded text-sm"
                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleCreateItem(); // Trigger creation on Enter key
+                  if (e.key === 'Enter') handleCreateItem();
                }}
             />
-            <button
-               onClick={() => {
-                  setIsCreating(false);
-                  setNewItemName('');
-               }}
-               className="rounded text-sm cursor-pointer"
-            >
-               <IconX size={20} />
-            </button>
          </div>
       </div>
    );
@@ -158,7 +155,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
                   <div>
                      {/* Folder */}
                      <div
-                        className={`flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-1 group ${isActive ? 'bg-[rgb(var(--accent))] text-white' : ''
+                        className={`flex items-center py-0.5 px-1 cursor-pointer hover:bg-muted rounded-sm my-1 group ${isActive ? 'bg-accent' : ''
                            }`}
                         onClick={() => {
                            handleFolderClick(currentPath)
@@ -168,18 +165,18 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
                         <Icon
                            icon={expandedFolders[currentPath] ? ChevronDown : ChevronRight}
                            size={16}
-                           className="mr-1 text-[rgb(var(--muted-foreground))]"
+                           className="mr-1 text-muted-foreground"
                         />
                         <Icon
                            icon={expandedFolders[currentPath] ? FolderOpen : Folder}
                            size={16}
-                           className="mr-1.5 text-[rgb(var(--accent-foreground))]"
+                           className="mr-1.5 text-accent-foreground"
                         />
                         <span className="text-sm">{key}</span>
                      </div>
                      {/* Render children if folder is expanded */}
                      {expandedFolders[currentPath] && node?.children && (
-                        <div className="pl-4 border-l border-[rgb(var(--border))] ml-2">
+                        <div className="pl-4 border-l border-border ml-2">
                            {renderTree(node.children || {}, currentPath)}
                            {isCreating && currentFolderPath === currentPath && renderInputField()}
                         </div>
@@ -187,14 +184,14 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
                   </div>
                ) : (
                   <div
-                     className={`flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-1 text-sm ${isActive ? 'bg-[rgb(var(--accent))] text-white' : ''
+                     className={`flex items-center py-0.5 px-1 cursor-pointer hover:bg-muted rounded-sm my-1 text-sm ${isActive ? 'bg-accent' : ''
                         }`}
                      onClick={() => handleFileClick({ id: currentPath, name: key, path: currentPath })}
                   >
                      <Icon
                         icon={getFileIcon(key)}
                         size={16}
-                        className="mr-1.5 text-[rgb(var(--muted-foreground))]"
+                        className="mr-1.5 text-muted-foreground"
                         strokeWidth={1.5}
                      />
                      {key}
@@ -220,9 +217,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
    return (
       <div
          className={`${sidebarCollapsed ? 'w-0 opacity-0' : 'w-64 opacity-100'
-            } border-r border-[rgb(var(--border))] transition-all duration-200 overflow-hidden flex flex-col`}
+            } border-r border-border transition-all duration-200 overflow-hidden flex flex-col`}
       >
-         <div className="p-3 font-medium text-xs tracking-tight uppercase text-[rgb(var(--muted-foreground))] flex items-center justify-between">
+         <div className="p-3 font-medium text-xs tracking-tight uppercase text-muted-foreground flex items-center justify-between">
             <span>Explorer</span>
             <div className='flex'>
                <div className="flex items-center">
@@ -233,7 +230,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
                         setNewItemName('')
                         setExpandedFolders((prev) => ({ ...prev, [currentFolderPath]: true }));
                      }}
-                     className="flex hover:bg-[rgb(var(--muted))] rounded-md text-sm p-1"
+                     className="flex hover:bg-muted rounded-md text-sm p-1"
                   >
                      <Icon icon={FilePlus} size={18} />
                   </button>
@@ -244,13 +241,13 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
                         setNewItemName('')
                         setExpandedFolders((prev) => ({ ...prev, [currentFolderPath]: true }));
                      }}
-                     className="flex items-end gap-1 hover:bg-[rgb(var(--muted))] rounded-md text-sm p-1"
+                     className="flex items-end gap-1 hover:bg-muted rounded-md text-sm p-1"
                   >
                      <Icon icon={FolderPlus} size={18} />
                   </button>
                </div>
                <button
-                  className="p-1 hover:bg-[rgb(var(--muted))] rounded-md"
+                  className="p-1 hover:bg-muted rounded-md"
                   onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
                >
                   <Icon icon={ChevronFirst} size={16} />
@@ -262,7 +259,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({ sidebarCollapsed, se
 
          <div className="overflow-y-auto flex-1">
             {isLoading ? (
-               <div className="text-center text-[rgb(var(--muted-foreground))] p-4 text-sm">Loading...</div>
+               <div className="text-center text-muted-foreground p-4 text-sm">Loading...</div>
             ) : error ? (
                <div className="text-center text-red-500 p-4 text-sm">{error}</div>
             ) : (

@@ -103,36 +103,36 @@ export const FileTree: React.FC = () => {
           {isFolder ? (
             <div>
               <div
-                className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 group"
+                className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-muted rounded-sm my-0.5 group"
                 onClick={() => toggleFolder(currentPath)}
               >
                 <Icon
                   icon={expandedFolders[currentPath] ? ChevronDown : ChevronRight}
                   size={16}
-                  className="mr-1 text-[rgb(var(--muted-foreground))]"
+                  className="mr-1 text-muted-foreground"
                 />
                 <Icon
                   icon={expandedFolders[currentPath] ? FolderOpen : Folder}
                   size={16}
-                  className="mr-1.5 text-[rgb(var(--accent-foreground))]"
+                  className="mr-1.5 text-accent-foreground"
                 />
                 <span className="text-sm">{key}</span>
               </div>
               {expandedFolders[currentPath] && node?.children && (
-                <div className="pl-4 border-l border-[rgb(var(--border))] ml-2">
+                <div className="pl-4 border-l border-border ml-2">
                   {renderTree(node.children, currentPath)}
                 </div>
               )}
             </div>
           ) : (
             <div
-              className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-[rgb(var(--muted))] rounded-sm my-0.5 text-sm"
+              className="flex items-center py-0.5 px-1 cursor-pointer hover:bg-muted rounded-sm my-0.5 text-sm"
               onClick={() => handleFileClick({ id: currentPath, name: key, path: currentPath })}
             >
               <Icon
                 icon={getFileIcon(key)}
                 size={16}
-                className="mr-1.5 text-[rgb(var(--muted-foreground))]"
+                className="mr-1.5 text-muted-foreground"
                 strokeWidth={1.5}
               />
               {key}
@@ -146,7 +146,7 @@ export const FileTree: React.FC = () => {
   if (isLoading && Object.keys(fileTree).length === 0) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="text-[rgb(var(--muted-foreground))] text-sm">Loading files...</div>
+        <div className="text-muted-foreground text-sm">Loading files...</div>
       </div>
     );
   }
@@ -164,7 +164,7 @@ export const FileTree: React.FC = () => {
       {Object.keys(fileTree).length > 0 ? (
         renderTree(fileTree)
       ) : (
-        <div className="text-center text-[rgb(var(--muted-foreground))] p-4 text-sm">
+        <div className="text-center text-muted-foreground p-4 text-sm">
           No files in workspace
         </div>
       )}

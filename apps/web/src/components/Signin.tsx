@@ -42,11 +42,11 @@ export const SignIn = () => {
       <Appbar />
       <div className="h-full flex flex-col items-center justify-center">
         <Tabs defaultValue="login" className="w-[400px]">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Log In</TabsTrigger>
-            <TabsTrigger value="register">Register</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 gap-2">
+            <TabsTrigger value="login" className="cursor-pointer">Log In</TabsTrigger>
+            <TabsTrigger value="register" className="cursor-pointer">Register</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="login">
             <Card className="rounded-lg p-4">
               <CardHeader>

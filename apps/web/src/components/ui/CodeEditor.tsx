@@ -101,9 +101,9 @@ export const CodeEditor = () => {
   return (
     <div className="h-full flex flex-col">
       {!isSaved && (
-        <div className="flex items-center justify-between p-2 border-b border-[rgb(var(--border))]">
+        <div className="flex items-center justify-between p-2 border-b border-border">
           <div className="text-sm flex items-center">
-            {!isSaved && <span className="ml-2 text-[rgb(var(--warning))]">saving...</span>}
+            {!isSaved && <span className="ml-2 text-warning">saving...</span>}
           </div>
         </div>
       )}
