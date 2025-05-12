@@ -8,8 +8,6 @@ interface FileTree {
 
 const router = Router();
 
-const baseDir = path.resolve(process.cwd(), 'user-storage');
-
 async function generateFileTree(directory: string): Promise<FileTree> {
     const tree: FileTree = {};
 
@@ -45,8 +43,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/content', async (req: Request, res: Response) => {
     try {
         const filePath = req.query.path as string;
-        const cleanPath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
-        const content = await fs.readFile(path.join(baseDir, cleanPath), 'utf-8');
+        const content = await fs.readFile(`../user-storage${filePath}`, 'utf-8');
         res.json({ content });
     } catch (error) {
         res.status(500).json({
@@ -65,8 +62,7 @@ router.post('/create', async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const cleanParent = parentPath ? (parentPath.startsWith('/') ? parentPath.slice(1) : parentPath) : '';
-        const targetPath = path.join(baseDir, cleanParent, name);
+        const targetPath = path.join('../user-storage', parentPath || '', name);
 
         if (type === 'folder') {
             await fs.mkdir(targetPath, { recursive: true });
