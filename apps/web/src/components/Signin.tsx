@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import { auth, googleProvider } from "../lib/firebase-config.ts";
+import { auth, db, googleProvider } from "../lib/firebase-config.ts";
 import {
   Button,
   Card, CardContent, CardDescription, CardHeader, CardTitle,
@@ -15,11 +16,21 @@ export const SignIn = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const createNewUser = (e: React.FormEvent) => {
+  const createNewUser = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => alert('success'));
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        name: user.email?.split('@')[0],
+        createdAt: new Date().toISOString(),
+      });
+      alert('success, created user');
+    } catch (error) {
+      setError((error as Error).message);
+    }
   }
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -27,14 +38,30 @@ export const SignIn = () => {
     setError(null);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        name: user.email?.split('@')[0],
+        lastLogin: new Date().toISOString(),
+      }, { merge: true });
     } catch (err) {
       setError((err as Error).message);
     }
   };
 
-  const signupWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
+  const signupWithGoogle = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        name: user.email?.split('@')[0],
+        lastLogin: new Date().toISOString(),
+      }, { merge: true })
+    } catch (error) {
+      setError((error as Error).message);
+    }
   }
 
   return (
@@ -54,7 +81,7 @@ export const SignIn = () => {
                 <CardDescription>Login to Save your progress</CardDescription>
               </CardHeader>
 
-              {error && <div className="bg-destructive/10 text-destructive p-3 rounded mb-4">{error}</div>}
+              {error && <div className="bg-destructive/20 text-destructive text-center p-3 rounded-lg my-4">{error}</div>}
               <CardContent>
                 <form onSubmit={handleSignIn}>
                   <div className="grid w-full items-center gap-4 mt-4">
