@@ -10,11 +10,13 @@ import {
   Tabs, TabsContent, TabsList, TabsTrigger
 } from "@repo/ui";
 import { Appbar } from "./ui/Appbar.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const createNewUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +24,8 @@ export const SignIn = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      localStorage.setItem('user-id', email);
+      navigate('/workspace');
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         name: user.email?.split('@')[0],
@@ -40,6 +44,8 @@ export const SignIn = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      localStorage.setItem('user-id', email);
+      navigate('/workspace');
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         name: user.email?.split('@')[0],
@@ -54,6 +60,8 @@ export const SignIn = () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
+      localStorage.setItem('user-id', user.uid);
+      navigate('/workspace');
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         name: user.email?.split('@')[0],
@@ -70,8 +78,8 @@ export const SignIn = () => {
       <div className="h-full flex flex-col items-center justify-center">
         <Tabs defaultValue="login" className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2 gap-2">
-            <TabsTrigger value="login" className="cursor-pointer">Log In</TabsTrigger>
-            <TabsTrigger value="register" className="cursor-pointer">Register</TabsTrigger>
+            <TabsTrigger value="login" className={`cursor-pointer`}>Log In</TabsTrigger>
+            <TabsTrigger value="register" className={`cursor-pointer`}>Register</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
@@ -113,7 +121,8 @@ export const SignIn = () => {
                     <div className="flex justify-between mt-5 mb-5 space-x-2">
                       <Button
                         variant="outline"
-                        className="w-full px-4 cursor-pointer"
+                        className="w-full px-4 cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={() => navigate('/')}
                       >
                         Cancel
                       </Button>
@@ -121,7 +130,7 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 cursor-pointer"
+                        className="w-full px-4 cursor-pointer bg-accent hover:bg-primary hover:text-primary-foreground"
                       >
                         Login
                       </Button>
@@ -173,7 +182,8 @@ export const SignIn = () => {
                     <div className="flex justify-between mt-5 mb-5 space-x-2">
                       <Button
                         variant="outline"
-                        className="w-full px-4 cursor-pointer"
+                        className="w-full px-4 cursor-pointer hover:text-destructive-foreground hover:bg-destructive"
+                        onClick={() => navigate('/')}
                       >
                         Cancel
                       </Button>
@@ -181,7 +191,8 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 cursor-pointer"
+                        className="w-full px-4 cursor-pointer bg-accent hover:bg-primary"
+
                       >
                         Register
                       </Button>
@@ -196,7 +207,7 @@ export const SignIn = () => {
           <Button
             variant="outline"
             onClick={signupWithGoogle}
-            className="cursor-pointer"
+            className="cursor-pointer bg-accent hover:bg-primary"
           >
             Sigin with Google
           </Button>

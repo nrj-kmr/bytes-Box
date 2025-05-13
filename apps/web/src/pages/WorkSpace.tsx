@@ -11,7 +11,7 @@ import {
     IconX,
     IconMonitor
 } from "../components/ui/LucidIcons";
-import { Files, Palette, CircleUserRound } from "lucide-react";
+import { Files, Palette, LogIn, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import socket from "../socket";
 import { editorThemeState } from "../store/editorAtoms";
@@ -24,6 +24,7 @@ export const WorkSpace = () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [terminalHeight] = useState(288);
 
+    const userId = localStorage.getItem('user-id')
     const navigate = useNavigate();
 
     // Initialize socket connection
@@ -58,14 +59,30 @@ export const WorkSpace = () => {
 
                 <div className="flex-1"></div>
 
-                {/* User's Info - Give Options in a popup 'onClick' */}
-                <button
-                    onClick={() => navigate('/signin')}
+                {/* User's Info - Login or Logout */}
+                {userId ? (
+                    <button
+                    onClick={() => {
+                        localStorage.removeItem('user-id')
+                        navigate('/signin')
+                    }}
                     className="w-10 h-10 flex items-center justify-center hover:bg-muted rounded-md text-muted-foreground hover:text-foreground active:translate-y-[1px] transition-all cursor-pointer"
-                    title="User Info"
-                >
-                    <Icon icon={CircleUserRound} size={24} />
+                    title="Logout"
+                    >
+                    <Icon icon={LogOut} size={24} />
                 </button>
+                ) : (
+                    <button
+                    onClick={() => {
+                        localStorage.removeItem('user-id')
+                        navigate('/signin')
+                    }}
+                    className="w-10 h-10 flex items-center justify-center hover:bg-muted rounded-md text-muted-foreground hover:text-foreground active:translate-y-[1px] transition-all cursor-pointer"
+                    title="Login"
+                    >
+                    <Icon icon={LogIn} size={24} />
+                </button>
+                )}
 
                 {/* ThemeToggle Button - Positioned around line 80 */}
                 <div className="text-muted-foreground hover:text-foreground m-2 cursor-pointer">
