@@ -9,7 +9,7 @@ export const Appbar = () => {
     const userId = localStorage.getItem('user-id')
 
     return (
-        <div className="w-full h-16 bg-background flex items-center justify-between px-6">
+        <div className="w-full h-16 flex items-center justify-between px-6 z-10">
             <div onClick={() => navigate('/')} className="flex items-center gap-2 cursor-pointer">
                 <img src="byteBox.png" alt="Logo" className="w-8 h-8" />
                 <span className="text-lg font-semibold">BytesBox</span>
