@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from "@repo/ui";
 import { Appbar } from "../components/ui/Appbar";
+import { Footer } from "../components/ui/Footer";
+import { HeroSection } from "../components/ui/HeroSection";
 
 export const HomePage = () => {
-    const navigate = useNavigate();
 
     return (
         <div className="flex flex-col min-h-screen text-foreground relative">
@@ -26,29 +25,9 @@ export const HomePage = () => {
                 ></div>
             </div>
 
-            {/* Main Content */}
-            <div className="flex flex-col items-center justify-center flex-1 p-4 relative">
-                <img
-                    src="byteBox.png"
-                    alt="Logo"
-                    className="w-32 h-32 mb-4"
-                />
-                <h1 className="text-3xl font-bold mb-4">Welcome to BytesBox</h1>
-                <p className="text-muted-foreground mb-6">Your all-in-one development environment</p>
+            <HeroSection />
 
-                <Button
-                    size="lg"
-                    onClick={() => navigate('/workspace')}
-                    className="mb-8 cursor-pointer px-4 py-1 rounded-lg bg-black text-white dark:bg-white dark:text-black"
-                >
-                    Get Started
-                </Button>
-            </div>
-
-            {/* Footer */}
-            <div className="bottom-0 relative bg-gray-300 dark:bg-slate-800 py-1.5">
-                <p className="w-full text-center text-xs text-foreground">All rights reserved, Copyright &copy; 2025 - BytesBox (nrjkmr)</p>
-            </div>
+            <Footer />
         </div>
     );
 }

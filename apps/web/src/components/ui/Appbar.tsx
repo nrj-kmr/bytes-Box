@@ -17,7 +17,7 @@ export const Appbar = () => {
             <div className="flex items-center gap-4">
                 <ThemeToggle />
                 {userId ? (
-                    <span className="flex items-center" title={userId}>
+                    <span className="flex items-center gap-2" title={userId}>
 
                         <Icon icon={CircleUserRound} size={24} />
                         <Button
@@ -25,7 +25,7 @@ export const Appbar = () => {
                                 localStorage.removeItem('user-id')
                                 navigate('/signin')
                             }}
-
+                            variant="secondary"
                             className="cursor-pointer"
                         >Logout</Button>
                     </span>

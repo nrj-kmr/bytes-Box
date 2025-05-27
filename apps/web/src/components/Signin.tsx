@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { auth, db, googleProvider } from "../lib/firebase-config.ts";
@@ -72,14 +72,40 @@ export const SignIn = () => {
     }
   }
 
+  const signInAnon = async () => {
+    setError(null);
+    try {
+      const userCredential = await signInAnonymously(auth);
+      const user = userCredential.user;
+      localStorage.setItem('user-id', user.uid);
+      navigate('/workspace');
+      await setDoc(doc(db, "users", user.uid), {
+        isAnonymous: true,
+        createdAt: new Date().toISOString(),
+      }, { merge: true });
+    } catch (error) {
+      setError((error as Error).message);
+    }
+  }
+
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
       <Appbar />
       <div className="h-full flex flex-col items-center justify-center">
         <Tabs defaultValue="login" className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2 gap-2">
-            <TabsTrigger value="login" className={`cursor-pointer`}>Log In</TabsTrigger>
-            <TabsTrigger value="register" className={`cursor-pointer`}>Register</TabsTrigger>
+            <TabsTrigger
+              value="login"
+              className="cursor-pointer data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Log In
+            </TabsTrigger>
+            <TabsTrigger
+              value="register"
+              className="cursor-pointer data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Register
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
@@ -121,7 +147,7 @@ export const SignIn = () => {
                     <div className="flex justify-between mt-5 mb-5 space-x-2">
                       <Button
                         variant="outline"
-                        className="w-full px-4 cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
+                        className="w-full px-4 cursor-pointer bg-transparent hover:bg-destructive hover:text-destructive-foreground"
                         onClick={() => navigate('/')}
                       >
                         Cancel
@@ -130,7 +156,7 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 cursor-pointer bg-accent hover:bg-primary hover:text-primary-foreground"
+                        className="w-full px-4 cursor-pointer bg-transparent"
                       >
                         Login
                       </Button>
@@ -182,7 +208,7 @@ export const SignIn = () => {
                     <div className="flex justify-between mt-5 mb-5 space-x-2">
                       <Button
                         variant="outline"
-                        className="w-full px-4 cursor-pointer hover:text-destructive-foreground hover:bg-destructive"
+                        className="w-full px-4 cursor-pointer hover:text-destructive-foreground bg-transparent hover:bg-destructive"
                         onClick={() => navigate('/')}
                       >
                         Cancel
@@ -191,7 +217,7 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 cursor-pointer bg-accent hover:bg-primary"
+                        className="w-full px-4 cursor-pointer bg-transparent"
 
                       >
                         Register
@@ -204,12 +230,21 @@ export const SignIn = () => {
             </Card>
           </TabsContent>
 
+          <p className="text-center">OR</p>
+
           <Button
             variant="outline"
             onClick={signupWithGoogle}
-            className="cursor-pointer bg-accent hover:bg-primary"
+            className="cursor-pointer"
           >
             Sigin with Google
+          </Button>
+          <Button
+            variant="outline"
+            onClick={signInAnon}
+            className="cursor-pointer"
+          >
+            Sign in Anonymously
           </Button>
         </Tabs>
       </div>

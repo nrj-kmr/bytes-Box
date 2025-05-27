@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil";
 import { activeTabState, FileNode, openTabsState } from "../../store/fileSystem";
-import { IconX } from "./LucidIcons";
+import { Icon, IconX } from "./LucidIcons";
+import { X } from "lucide-react";
 
 export const Tabs = () => {
     const [openTabs, setOpenTabs] = useRecoilState(openTabsState);
@@ -42,7 +43,7 @@ export const Tabs = () => {
                         `}
                         onClick={(e) => handleCloseTab(e, file)}
                     >
-                        <IconX className="w-3.5 h-3.5" />
+                        <Icon icon={X} className="w-3.5 h-3.5" />
                     </button>
                 </div>
             ))}
