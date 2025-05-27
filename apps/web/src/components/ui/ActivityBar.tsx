@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Files, Palette, LogIn, User } from "lucide-react";
+import { Files, Palette, LogIn, UserCircle2 } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { FileExplorer } from "./FileExplorer";
 import { useRecoilState } from "recoil";
@@ -16,9 +16,8 @@ export const ActivityBar = () => {
 
    const userId = localStorage.getItem('user-id');
 
-
    return (
-      <div className="flex h-screen bg-background text-foreground overflow-hidden">
+      <div className={`flex h-screen bg-background text-foreground overflow-hidden`}>
          <div className="w-11 bg-secondary h-full flex flex-col items-center py-2 gap-1 border-r border-border">
 
             <div className="py-3 flex flex-col items-center">
@@ -46,7 +45,7 @@ export const ActivityBar = () => {
                   className="w-10 h-10 flex items-center justify-center hover:bg-accent rounded-md text-muted-foreground hover:text-foreground active:translate-y-[1px] transition-all cursor-pointer"
                   title="Logout"
                   >
-                  <Icon icon={User} size={24} />
+                  <Icon icon={UserCircle2} size={24} />
                </button>
             ) : (
                <button

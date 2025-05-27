@@ -11,6 +11,8 @@ import {
 } from "@repo/ui";
 import { Appbar } from "./ui/Appbar.tsx";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "./ui/LucidIcons.tsx";
+import { User } from "lucide-react";
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -91,18 +93,32 @@ export const SignIn = () => {
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
       <Appbar />
-      <div className="h-full flex flex-col items-center justify-center">
+      <div
+        className="pointer-events-none absolute inset-0 h-full w-full bg-gray-200 dark:bg-gray-900 z-0"
+        aria-hidden="true"
+      >
+        <div
+          className="
+                    absolute inset-0
+                    bg-[linear-gradient(to_right,#8fcaa5_0.1px,transparent_0.5px),linear-gradient(to_bottom,#8fcaa5_0.1px,transparent_0.5px)]
+                    bg-[size:20px_18px]
+                    [mask-image:radial-gradient(ellipse_60%_30%_at_30%_0%,#000_40%,transparent_210%)]
+                    dark:bg-[linear-gradient(to_right,#8fcaa5_0px,transparent_0.3px),linear-gradient(to_bottom,#8fcaa5_0px,transparent_0.3px)]
+                "
+        ></div>
+      </div>
+      <div className="h-full flex flex-col items-center justify-center z-10">
         <Tabs defaultValue="login" className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2 gap-2">
             <TabsTrigger
               value="login"
-              className="cursor-pointer data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="cursor-pointer data-[state=active]:bg-primary bg-card data-[state=active]:text-primary-foreground hover:bg-accent shadow-sm"
             >
               Log In
             </TabsTrigger>
             <TabsTrigger
               value="register"
-              className="cursor-pointer data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="cursor-pointer data-[state=active]:bg-primary bg-card data-[state=active]:text-primary-foreground hover:bg-accent shadow-sm"
             >
               Register
             </TabsTrigger>
@@ -156,7 +172,7 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 cursor-pointer bg-transparent"
+                        className="w-full px-4 cursor-pointer bg-transparent hover:bg-accent hover:text-accent-foreground"
                       >
                         Login
                       </Button>
@@ -217,8 +233,7 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 bg-transparent"
-
+                        className="w-full px-4 bg-transparent hover:bg-accent hover:text-accent-foreground"
                       >
                         Register
                       </Button>
@@ -233,16 +248,24 @@ export const SignIn = () => {
           <p className="text-center">OR</p>
 
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={signupWithGoogle}
+            className="hover:bg-primary hover:text-primary-foreground shadow-sm"
           >
-            Sigin with Google
+            <div className="flex justify-center gap-2">
+              <img src="google.png" alt="" className="w-5 h-5" />
+              Sigin with Google
+            </div>
           </Button>
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={signInAnon}
+            className="hover:bg-primary hover:text-primary-foreground shadow-sm"
           >
-            Sign in Anonymously
+            <div className="flex justify-center gap-2">
+              <Icon icon={User} />
+              Sign in Anonymously
+            </div>
           </Button>
         </Tabs>
       </div>

@@ -6,11 +6,12 @@ export const Footer = () => {
                <div>
                   <h4 className="font-semibold text-sm mb-2">About</h4>
                   <p className="text-xs text-gray-700 dark:text-gray-300">BytesBox is an IDE that runs inside a Browser.</p>
+                  <p className="text-xs text-gray-700 dark:text-gray-300">Built to Build.</p>
                </div>
                <div className="flex flex-col items-center">
                   <h4 className="font-semibold text-sm mb-2">Links</h4>
-                  <a href="/#" className="text-xs text-blue-600 dark:text-blue-400 hover:underline">Docs</a>
-                  <a href="/#" className="text-xs text-blue-600 dark:text-blue-400 hover:underline">Blog</a>
+                  <a href="https://github.com/nrj-kmr/bytes-Box/blob/main/apps/docs/system-architecture.md" className="text-xs text-blue-600 dark:text-blue-400 hover:underline">Docs</a>
+                  <a href="/blogs" className="text-xs text-blue-600 dark:text-blue-400 hover:underline">Blog</a>
                </div>
                <div className="flex flex-col items-end">
                   <h4 className="font-semibold text-sm mb-2">Contact</h4>

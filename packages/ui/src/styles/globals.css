@@ -4,19 +4,19 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.99 0 0);
+  --background: oklch(0.98 0 0);
   --foreground: oklch(0.20 0 0);
   --card: oklch(0.99 0 0);
   --card-foreground: oklch(0.20 0 0);
   --popover: oklch(0.99 0 0);
   --popover-foreground: oklch(0.44 0 0);
-  --primary: oklch(0.5206 0.2056 259.42);
+  --primary: oklch(0.5176 0.1677 259.42);
   --primary-foreground: oklch(1 0 259.42);
-  --secondary: oklch(0.99 0 0);
+  --secondary: oklch(0.8302 0 0);
   --secondary-foreground: oklch(0.20 0 0);
   --muted: oklch(0.95 0 0);
   --muted-foreground: oklch(0.24 0 0);
-  --accent: oklch(0.8477 0.0089 264.52);
+  --accent: oklch(0.9477 0.0089 264.52);
   --accent-foreground: oklch(0.24 0 0);
   --destructive: oklch(0.55 0.19 32.73);
   --destructive-foreground: oklch(0.99 0.00 17.21);
