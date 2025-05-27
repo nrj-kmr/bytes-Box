@@ -26,13 +26,12 @@ export const Appbar = () => {
                                 navigate('/signin')
                             }}
                             variant="secondary"
-                            className="cursor-pointer"
                         >Logout</Button>
                     </span>
                 ) : (
                     <Button
                         variant="outline"
-                        className="flex items-center gap-2 px-2 cursor-pointer"
+                        className="flex items-center gap-2 px-2"
                         onClick={() => navigate('/signin')}
                     >
                         <LogIn size={16} />

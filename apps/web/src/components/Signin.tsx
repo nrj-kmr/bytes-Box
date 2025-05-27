@@ -208,7 +208,7 @@ export const SignIn = () => {
                     <div className="flex justify-between mt-5 mb-5 space-x-2">
                       <Button
                         variant="outline"
-                        className="w-full px-4 cursor-pointer hover:text-destructive-foreground bg-transparent hover:bg-destructive"
+                        className="w-full px-4 hover:text-destructive-foreground bg-transparent hover:bg-destructive"
                         onClick={() => navigate('/')}
                       >
                         Cancel
@@ -217,7 +217,7 @@ export const SignIn = () => {
                       <Button
                         type="submit"
                         variant="outline"
-                        className="w-full px-4 cursor-pointer bg-transparent"
+                        className="w-full px-4 bg-transparent"
 
                       >
                         Register
@@ -235,14 +235,12 @@ export const SignIn = () => {
           <Button
             variant="outline"
             onClick={signupWithGoogle}
-            className="cursor-pointer"
           >
             Sigin with Google
           </Button>
           <Button
             variant="outline"
             onClick={signInAnon}
-            className="cursor-pointer"
           >
             Sign in Anonymously
           </Button>

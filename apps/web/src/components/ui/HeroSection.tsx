@@ -24,7 +24,7 @@ export const HeroSection = () => {
                size="lg"
                onClick={() => navigate('/signin')}
                variant="outline"
-               className="mb-8 cursor-pointer px-4 py-1 rounded-lg"
+               className="mb-8 px-4 py-1 rounded-lg"
                title="try it out"
             >
                Get Started
@@ -32,7 +32,7 @@ export const HeroSection = () => {
             <Button
                size="lg"
                variant="secondary"
-               className="mb-8 cursor-pointer px-4 py-1 rounded-lg"
+               className="mb-8 px-4 py-1 rounded-lg"
                title="Setup Locally"
             >
                <div className="flex items-center gap-2">
